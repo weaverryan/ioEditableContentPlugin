@@ -1,0 +1,21 @@
+# route to dynamic css file
+editable_content_admin_css:
+  url:   /js/editable_content.css
+  param: { module: ioEditableContent, action: css, sf_format: css }
+
+# route to dynamic js file
+editable_content_admin_js:
+  url:   /js/editable_content.js
+  param: { module: ioEditableContent, action: js, sf_format: js }
+
+# retrieves the editable form area
+editable_content_service_get:
+  url:   /service/contents/get
+  param: { module: ioEditableContent, action: get }
+
+# saves the editable form area
+editable_content_service_update:
+  url:   /service/contents/update
+  param: { module: ioEditableContent, action: update, sf_format: json }
+  requirement:
+    sf_method: [post]

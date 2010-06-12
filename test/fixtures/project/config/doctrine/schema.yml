@@ -1,0 +1,6 @@
+Blog:
+  columns:
+    title:     string(255)
+    body:      clob
+    link_url:  string(255)
+    link_text: string(255)

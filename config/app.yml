@@ -1,0 +1,18 @@
+all:
+  editable_content:
+
+    # this content will be shown in place of empty content
+    default_content:    "[Double click to edit content]"
+
+    # class used to render the editable content areas
+    content_service_class: ioEditableContentService
+
+    # inline editing will be made available only if a user has this credential
+    admin_credential:   editable_content_admin
+
+    assets_web_root:    /ioEditableContentPlugin
+    editable_class_name: io_editable_content
+
+    # whether or not to automatically include the following asset libraries
+    load_facebox:       true
+    load_jquery:        true
