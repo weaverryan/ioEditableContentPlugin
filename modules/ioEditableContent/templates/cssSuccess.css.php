@@ -15,3 +15,8 @@
   float: right;
   padding: .2em .2em 0 0;
 }
+
+.<?php echo $editableClassName ?> textarea, .<?php echo $editableClassName ?> input[type="text"] {
+  width: 95%;
+font:bold 0.95em arial, sans-serif;
+}
