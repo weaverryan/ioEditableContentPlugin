@@ -131,6 +131,14 @@ $.widget('ui.ioEditableContent', {
     $.each(this.option('control_events'), function(key, value) {
       self.element.bind(key, value);
     });
+
+   // Link deactivation
+    $('a', self.element).click(function() {
+      if (confirm('Open link in a new window?')) {
+        window.open($(this).attr('href'));
+      }
+      return false;
+    });
   },
   
   _disableControls: function() {
@@ -153,10 +161,24 @@ $.widget('ui.ioEditableContent', {
   _getUrlQueryString: function(){
     // returns the common query string needed for the form and show urls
     var params = {};
-    params.fields = this.option('fields');
-    params.form_url = this.option('form_url');
     params.model = this.option('model');
     params.pk = this.option('pk');
+    params.fields = this.option('fields');
+
+    if(typeof(this.option('form')) !== 'undefined')
+    {
+      params.form = this.option('form');
+    }
+
+    if(typeof(this.option('form_partial')) !== 'undefined')
+    {
+      params.form_partial = this.option('form_partial');
+    }
+
+    if(typeof(this.option('partial')) !== 'undefined')
+    {
+      params.partial = this.option('partial');
+    }
 
     return jQuery.param(params)
   },

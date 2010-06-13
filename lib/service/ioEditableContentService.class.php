@@ -148,12 +148,22 @@ class ioEditableContentService
     {
       if (!$partial)
       {
-        throw new sfException('Multi-field content areas must pass a partial to be rendered with.');
+        throw new sfException('You must pass a "partial" option for multi-field content areas.');
       }
 
       sfApplicationConfiguration::getActive()->loadHelpers('Partial');
 
-      return get_partial($partial, array('obj' => $obj));
+      /*
+       * Send the object to the view with as "tableized" version of the model.
+       * For example:
+       *  * Blog => $blog
+       *  * sfGuardUser => $sf_guard_user
+       *
+       * In case of confusion, another variable, $var_name, is passed, which
+       * is the actual string that the variable is set to.
+       */
+      $varName = sfInflector::underscore($this->_getObjectClass($obj));
+      return get_partial($partial, array('var_name' => $varName, $varName => $obj));
     }
 
     if ($content = $obj->get($fields[0]))
