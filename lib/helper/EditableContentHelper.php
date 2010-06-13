@@ -14,16 +14,29 @@
 /**
  * Returns an editable field with markup necessary to allow editing
  *
- * Available options include
- *   * partial - A partial to render with instead of using the raw field value
- *   * form    - A form class to use for editing the field. The form class
- *               will be stripped to only include the given field. To
+ * All options are rendered as attributes, except for these special options:
+ *   * partial - A partial to render with instead of using the raw content value
+ *   * form    - A form class to use for editing the content. The form class
+ *               will be stripped to only include the given content. To
  *               edit entire forms, use get_editable_form().
+ *   * form_partial - The partial used to render the fields of the form
+ *   * mode    - Which type of editor to load: fancybox(default)|inline
+ *
+ * @example
+ * editable_content_tag('div', $blog, 'title');
+ *
+ * editable_content_tag('div', $blog, null, array(
+ *   'partial'  => 'blog/show',
+ *   'form'     => 'myBlogForm',
+ *   'form_partial' => 'blog/form',
+ *   'mode'     => 'inline',
+ *   'class'    => 'my_div_class', // output as an attribute on the div wrapper
+ * ));
  *
  * @param string  $tag      The tag to render (e.g. div, a, span)
  * @param mixed   $obj      A Doctrine/Propel record
  * @param string  $field    The name of the field to edit & render
- * @param array   $options  The options array (see above)
+ * @param array   $options  Mixture of options and attributes (see above)
  *
  * @return string
  */
