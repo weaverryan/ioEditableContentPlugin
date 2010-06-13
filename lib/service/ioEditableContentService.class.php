@@ -180,7 +180,8 @@ class ioEditableContentService
       return $content;
     }
 
-    return $this->getOption('empty_text', '[Click to edit]');
+    // render the default text if the editor is shown
+    return $this->shouldShowEditor() ? $this->getOption('empty_text', '[Click to edit]') : '';
   }
 
   /**
