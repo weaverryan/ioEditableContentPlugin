@@ -144,13 +144,8 @@ class ioEditableContentService
    */
   public function getContent($obj, $fields, $partial = null)
   {
-    if (count($fields) > 1)
+    if ($partial)
     {
-      if (!$partial)
-      {
-        throw new sfException('You must pass a "partial" option for multi-field content areas.');
-      }
-
       sfApplicationConfiguration::getActive()->loadHelpers('Partial');
 
       /*
@@ -164,6 +159,15 @@ class ioEditableContentService
        */
       $varName = sfInflector::underscore($this->_getObjectClass($obj));
       return get_partial($partial, array('var_name' => $varName, $varName => $obj));
+    }
+
+    // unless we have exactly one field, we need a partial to render
+    if (count($fields) != 1)
+    {
+      if (!$partial)
+      {
+        throw new sfException('You must pass a "partial" option for multi-field content areas.');
+      }
     }
 
     if ($content = $obj->get($fields[0]))
