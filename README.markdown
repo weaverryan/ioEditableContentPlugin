@@ -1,11 +1,20 @@
 ioEditableContentPlugin
 =====================
 
-Allows for frontend/inline editing of fields and forms. When a user is authenticated
-and has the correct permission, the editable content blocks can be double-clicked
-to initiate editing.
+Allows for frontend/inline editing of fields and forms. The goal is to
+allow content to be inline-editable without getting in the way of the
+developer.
 
     <?php echo editable_content_tag('h1', $blog, 'title') ?>
+
+    <h1>My blog title</h1>
+
+When a user is authenticated and has the correct permission, the editable
+content blocks can be double-clicked to initiate editing.
+
+![view](http://github.com/weaverryan/ioEditableContentPlugin/raw/master/docs/view.png "normal view mode")
+
+![editors](http://github.com/weaverryan/ioEditableContentPlugin/raw/master/docs/editors.png "editors open")
 
 This plugin is inspired by both:
  * [sfDoctrineEditableComponentPlugin](http://github.com/n1k0/sfDoctrineEditableComponentPlugin/blob/master/config/app.yml)
