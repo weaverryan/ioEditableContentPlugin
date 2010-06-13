@@ -19,7 +19,7 @@ $.widget('ui.ioContentEditor', {
     // hook up the cancel button
     $('input.cancel', this.getForm()).click(function() {
       // trigger a close event
-      
+
       self.element.trigger('close');
       return false;
     });
@@ -66,22 +66,8 @@ $.widget('ui.ioContentEditor', {
     
     // register the ajaxSuccess function on this editor
     form.bind('ajaxResponseSuccess', function() {
-      self.block();
-      
-      // initialize any slot-specific functionality if it exists
-      var formClass = 'sfSympalSlot'+self.option('slotType');
-      if ($.isFunction(self.element[formClass]))
-      {
-        self.element[formClass](self);
-      }
-      
-      // Keep track of the currently focused editor
-      $('input:text, textarea', form).focus(function() {
-        currentlyFocusedSympalEditor = $(this);
-      });
-      
-      self.unblock();
-    }); // end ajaxResponseSuccess
+      // do something once the form is loaded
+    });
   },
   
   block: function() {

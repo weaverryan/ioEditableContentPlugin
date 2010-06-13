@@ -16,6 +16,6 @@
     <?php include_partial($formPartial, array('form' => $form)); ?>
   </div>
 
-  <input type="submit" class="cancel" value="cancel" />
+  <input type="button" class="cancel" value="cancel" />
   <input type="submit" value="save" />
 </form>

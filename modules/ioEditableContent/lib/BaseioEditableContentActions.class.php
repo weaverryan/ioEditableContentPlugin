@@ -12,7 +12,7 @@ class BaseioEditableContentActions extends sfActions
   public function preExecute()
   {
     $this->pluginWebRoot = sfConfig::get('app_editable_content_assets_web_root', '/ioEditableContentPlugin');
-    $this->editableClassName = $this->getEditableContentService()
+    $this->editableClassName = $this->_getEditableContentService()
       ->getOption('editable_class_name', 'io_editable_content');
   }
 
@@ -63,6 +63,23 @@ class BaseioEditableContentActions extends sfActions
     return sfView::NONE;
   }
 
+  /**
+   * The ajax action the re-renders the content of an area
+   */
+  public function executeShow(sfWebRequest $request)
+  {
+    $this->_setupVariables($request);
+    $service = $this->_getEditableContentService();
+
+    // render the content of the tag
+    $this->renderText($service->getContent(
+      $this->object,
+      $this->fields,
+      $this->partial
+    ));
+
+    return sfView::NONE;
+  }
 
   /**
    * Returns the form object based on the request parameters
@@ -83,8 +100,8 @@ class BaseioEditableContentActions extends sfActions
 
     // @todo make this work with propel
     $this->forward404Unless($this->model && $this->pk);
-    $object = Doctrine_Core::getTable($this->model)->find($this->pk);
-    $this->forward404Unless($object);
+    $this->object = Doctrine_Core::getTable($this->model)->find($this->pk);
+    $this->forward404Unless($this->object);
 
     if (!class_exists($this->formClass))
     {
@@ -92,7 +109,7 @@ class BaseioEditableContentActions extends sfActions
       return sfView::NONE;
     }
 
-    $this->form = new $this->formClass($object);
+    $this->form = new $this->formClass($this->object);
     if ($this->fields)
     {
       $this->form->useFields($this->fields);
@@ -105,13 +122,13 @@ class BaseioEditableContentActions extends sfActions
    */
   protected function _checkCredentials()
   {
-    $this->forward404Unless($this->getEditableContentService()->shouldShowEditor($this->getUser()));
+    $this->forward404Unless($this->_getEditableContentService()->shouldShowEditor($this->getUser()));
   }
 
   /**
    * @return ioEditableContentService
    */
-  protected function getEditableContentService()
+  protected function _getEditableContentService()
   {
     return $this->getContext()
       ->getConfiguration()

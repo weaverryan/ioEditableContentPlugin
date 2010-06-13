@@ -61,13 +61,14 @@ $.widget('ui.ioEditableContent', {
     
     // kill the editor
     var editor = this.getEditor();
-    this._setOption('contentEditor', null);
+    this._setOption('content_editor', null);
+
     
     self.blockUI();
     
     // ajax in the content, and then set things back up
-    $('.sympal_slot_content', self.element).load(
-      self.option('form_url'),
+    $(self.element).load(
+      self._getShowUrl(),
       function() {
         // reinitialize the non-edit-mode controls
         self._enableControls();
@@ -76,7 +77,7 @@ $.widget('ui.ioEditableContent', {
         $.fancybox.close();
         
         // destroy the editor
-        editor.sympalContentEditor('destroy');
+        editor.ioContentEditor('destroy');
         
         self.unblockUI();
         
@@ -142,16 +143,22 @@ $.widget('ui.ioEditableContent', {
   },
 
   _getFormUrl: function(){
+    return this.option('form_url')+'?'+this._getUrlQueryString();
+  },
+
+  _getShowUrl: function(){
+    return this.option('show_url')+'?'+this._getUrlQueryString();
+  },
+
+  _getUrlQueryString: function(){
+    // returns the common query string needed for the form and show urls
     var params = {};
     params.fields = this.option('fields');
     params.form_url = this.option('form_url');
     params.model = this.option('model');
     params.pk = this.option('pk');
 
-    var form_url = this.option('form_url')+'?'+jQuery.param(params);
-    console.log(form_url);
-
-    return form_url;
+    return jQuery.param(params)
   },
   
   getEditor: function(){
