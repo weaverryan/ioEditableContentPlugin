@@ -32,12 +32,6 @@ class ioEditableContentPluginConfiguration extends sfPluginConfiguration
    */
   public function getEditableContentService()
   {
-    if ($this->_editableContentService === null)
-    {
-      $class = sfConfig::get('app_editable_content_content_service_class', 'ioEditableContentService');
-      $this->_editableContentService = new $class();
-    }
-
     return $this->_editableContentService;
   }
 
@@ -56,5 +50,60 @@ class ioEditableContentPluginConfiguration extends sfPluginConfiguration
 
     // Load helper as well
     $event->getSubject()->getConfiguration()->loadHelpers(array('EditableContent'));
+
+    // create the editable content service
+    $this->_editableContentService = $this->_createEditableContentService($event->getSubject()->getUser());
+
+    // load the editor assets
+    if ($this->_editableContentService->shouldShowEditor())
+    {
+      $this->_loadEditorAssets($event->getSubject());
+    }
+  }
+
+  /**
+   * Creates the editable content service class.
+   *
+   * @param sfUser $user
+   * @return ioEditableContentService
+   */
+  protected function _createEditableContentService(sfUser $user)
+  {
+    $class = sfConfig::get('app_editable_content_content_service_class', 'ioEditableContentService');
+    $options = sfConfig::get('app_editable_content_content_service_options', array());
+
+    return new $class($user, $options);
+  }
+
+
+  /**
+   * Loads all of the js/css necessary to support the inline editor
+   *
+   * @param sfWebResponse $response
+   * @return void
+   */
+  protected function _loadEditorAssets(sfContext $context)
+  {
+    $response = $context->getResponse();
+    $pluginWebRoot = sfConfig::get('app_editable_content_assets_web_root', '/ioEditableContentPlugin');
+
+    // JQuery
+    if (true === sfConfig::get('app_editable_content_load_jquery'))
+    {
+      $response->addJavascript(sprintf('%s/js/jquery-1.4.2.min.js', $pluginWebRoot), 'last');
+    }
+
+    // Fancybox
+    if (true === sfConfig::get('app_editable_content_load_fancybox'))
+    {
+      $response->addJavascript(sprintf('%s/fancybox/jquery.fancybox-1.3.1.js', $pluginWebRoot), 'last');
+      $response->addStylesheet(sprintf('%s/fancybox/jquery.fancybox-1.3.1.css', $pluginWebRoot), 'last');
+    }
+
+    // The admin javascript file is handled by symfony
+    $response->addJavascript($context->getController()->genUrl('@editable_content_admin_js'), 'last');
+
+    // The admin css file is handled by symfony
+    $response->addStylesheet($context->getController()->genUrl('@editable_content_admin_css'), 'first');
   }
 }

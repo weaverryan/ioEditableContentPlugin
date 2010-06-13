@@ -1,11 +1,11 @@
 <?php
 
 /**
- * Helper class for the editable field plugin.
+ * Helper class for the editable content plugin.
  * 
- * Assists in outputting the editable fields
+ * Assists in outputting the editable content tags
  * 
- * @package     ioEditableFieldPlugin
+ * @package     ioEditableContentPlugin
  * @subpackage  helper
  * @author      Ryan Weaver <ryan.weaver@iostudio.com>
  */
@@ -29,17 +29,19 @@
  */
 function editable_content_tag($tag, $obj, $field, $options = array())
 {
-  return get_editable_field_service()->getEditableContentTag($tag, $obj, $field, $options);
+  $user = sfContext::getInstance()->getUser(); // -1 kitten
+
+  return get_editable_content_service()->getEditableContentTag($tag, $obj, $field, $options, $user);
 }
 
 /**
- * Shortcut to return the current editable field service.
+ * Shortcut to return the current editable content service.
  *
- * @return ioEditableFieldService
+ * @return ioEditableContentService
  */
-function get_editable_field_service()
+function get_editable_content_service()
 {
-  return sfApplicationConfiguration()::getActive()
-    ->getPluginConfiguration('ioEditableFieldServicePlugin')
-    ->getEditableFieldService();
+  return sfApplicationConfiguration::getActive()
+    ->getPluginConfiguration('ioEditableContentPlugin')
+    ->getEditableContentService();
 }

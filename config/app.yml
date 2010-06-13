@@ -1,18 +1,17 @@
 all:
   editable_content:
 
-    # this content will be shown in place of empty content
-    default_content:    "[Double click to edit content]"
-
     # class used to render the editable content areas
     content_service_class: ioEditableContentService
 
-    # inline editing will be made available only if a user has this credential
-    admin_credential:   editable_content_admin
+    content_service_options:
+      empty_text:         "[Click to edit]"         # this content will be shown in place of empty content
+      edit_mode:          fancybox                  # The default editor mode: fancybox|inline
+      admin_credential:   false    # inline editing only made available to users with this credential
+      editable_class_name: io_editable_content
 
-    assets_web_root:    /ioEditableContentPlugin
-    editable_class_name: io_editable_content
+    assets_web_root:     /ioEditableContentPlugin
 
     # whether or not to automatically include the following asset libraries
-    load_facebox:       true
+    load_fancybox:      true
     load_jquery:        true

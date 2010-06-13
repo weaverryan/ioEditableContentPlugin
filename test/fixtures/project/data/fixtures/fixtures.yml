@@ -1,17 +1,8 @@
-# # Populate this file with data to be loaded by your ORM's *:data-load task.
-# # You can create multiple files in this directory (i.e. 010_users.yml,
-# # 020_articles.yml, etc) which will be loaded in alphabetical order.
-# # 
-# # See documentation for your ORM's *:data-load task for more information.
-# 
-# User:
-#   fabien:
-#     username: fabien
-#     password: changeme
-#     name:     Fabien Potencier
-#     email:    fabien.potencier@symfony-project.com
-#   kris:
-#     username: Kris.Wallsmith
-#     password: changeme
-#     name:     Kris Wallsmith
-#     email:    kris.wallsmith@symfony-project.com
+Blog:
+  test_blog:
+    title:    My test blog
+    body:  |
+      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. In et luctus sapien. Sed nunc ipsum, imperdiet vulputate euismod ut, venenatis sit amet quam. Integer dictum nisl id magna malesuada dapibus. Proin nec erat sapien. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Quisque vitae massa ut urna tempus interdum vitae id neque. Aliquam est orci, eleifend consectetur tempor placerat, adipiscing sed turpis. Nam eu odio et urna rutrum dictum. Duis feugiat odio ut justo porta sodales. Nam fermentum blandit tortor, ac aliquet dui vehicula a. Vestibulum sit amet justo et eros lobortis consequat. Mauris molestie, arcu in gravida aliquet, massa augue fringilla tellus, vel fermentum ipsum urna nec nisi. Nulla adipiscing magna in est interdum hendrerit. Ut elementum quam arcu. Vestibulum in tortor nec urna accumsan iaculis. Aliquam id nibh sagittis ligula lacinia feugiat et a lacus.</p>
+      <p>Donec vel metus nisi. Quisque fermentum orci at massa vehicula aliquet. Donec venenatis nibh ut sapien vulputate quis auctor ante posuere. Suspendisse varius, urna in imperdiet porttitor, nibh quam tincidunt odio, et ornare est mi ac metus. Nam fringilla nunc vitae massa venenatis mollis. Phasellus semper gravida lectus nec lobortis. Integer ornare ultricies lectus vitae fringilla. Fusce sed consectetur ligula. Fusce varius velit at lacus viverra sit amet auctor odio sagittis. Nunc non tellus eget nulla tincidunt elementum ac a quam. Cras ut lorem eget urna pharetra aliquet. Vivamus vitae odio eros, quis iaculis ante. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas.</p>
+    link_url:  http://www.sympalphp.org
+    link_text: Sympal CMF
