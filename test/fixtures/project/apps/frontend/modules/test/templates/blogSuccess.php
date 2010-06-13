@@ -3,7 +3,7 @@
 </div>
 
 <div class="test_link">
-  <?php echo editable_content_tag('div', $blog, array('link_url', 'link_text'), array('partial' => 'test/link')) ?>
+  <?php echo editable_content_tag('div', $blog, array('link_url', 'link_text'), array('partial' => 'test/link', 'mode' => 'fancybox')) ?>
 </div>
 
 <div class="test_body">
