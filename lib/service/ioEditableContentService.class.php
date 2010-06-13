@@ -128,6 +128,11 @@ class ioEditableContentService
     {
       return $this->_user->hasCredential($credential);
     }
+    else
+    {
+      // even if no credential were passed, still require a login at least
+      return $this->_user->isAuthenticated();
+    }
 
     return true;
   }
