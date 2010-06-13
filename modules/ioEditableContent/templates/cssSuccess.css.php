@@ -18,5 +18,5 @@
 
 .<?php echo $editableClassName ?> textarea, .<?php echo $editableClassName ?> input[type="text"] {
   width: 95%;
-font:bold 0.95em arial, sans-serif;
+  font:bold 0.95em arial, sans-serif;
 }

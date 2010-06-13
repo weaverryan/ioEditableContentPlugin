@@ -11,13 +11,13 @@
   }
 ?>
 
-<table>
-  <?php if (count($renderableFields) == 1): ?>
-    <?php echo $form[$renderableFields[0]]->renderError() ?>
-    <?php echo $form[$renderableFields[0]]->render() ?>
-  <?php else: ?>
+<?php if (count($renderableFields) == 1): ?>
+  <?php echo $form[$renderableFields[0]]->renderError() ?>
+  <?php echo $form[$renderableFields[0]]->render() ?>
+<?php else: ?>
+  <table>
     <?php foreach ($renderableFields as $field): ?>
-        <?php echo $form[$field]->renderRow() ?>
+      <?php echo $form[$field]->renderRow() ?>
     <?php endforeach; ?>
-  <?php endif; ?>
-</table>
+  </table>
+<?php endif; ?>
