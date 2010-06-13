@@ -17,6 +17,7 @@ content blocks can be double-clicked to initiate editing.
 ![editors](http://github.com/weaverryan/ioEditableContentPlugin/raw/master/docs/editors.png "editors open")
 
 This plugin is inspired by both:
+
  * [sfDoctrineEditableComponentPlugin](http://github.com/n1k0/sfDoctrineEditableComponentPlugin/blob/master/config/app.yml)
  * [sympal CMF](http://www.sympalphp.org)
 
@@ -39,9 +40,9 @@ In the editor that's displayed, add the following entry and then save
 
 Finally, update:
 
-    svn up
+    svn update
 
-# Setup
+### Setup
 
 In your `config/ProjectConfiguration.class.php` file, make sure you have
 the plugin enabled.
