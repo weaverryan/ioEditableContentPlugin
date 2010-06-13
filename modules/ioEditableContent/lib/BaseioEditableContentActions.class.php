@@ -62,8 +62,10 @@ class BaseioEditableContentActions extends sfActions
     }
 
     $formPartial = $request->getParameter('form_partial', 'ioEditableContent/formFields');
-    
-    $json['response'] = $this->getPartial($formPartial);
+
+    // the form body consists of both global errors and the form field partial
+    $json['response'] = $this->form->renderGlobalErrors();
+    $json['response'] .= $this->getPartial($formPartial);
     $this->renderText(json_encode($json));
 
     return sfView::NONE;
