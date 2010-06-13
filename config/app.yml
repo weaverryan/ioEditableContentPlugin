@@ -7,7 +7,7 @@ all:
     content_service_options:
       empty_text:         "[Click to edit]"         # this content will be shown in place of empty content
       edit_mode:          fancybox                  # The default editor mode: fancybox|inline
-      admin_credential:   false    # inline editing only made available to users with this credential
+      admin_credential:   editable_content_admin    # inline editing only made available to users with this credential
       editable_class_name: io_editable_content
 
     assets_web_root:     /ioEditableContentPlugin

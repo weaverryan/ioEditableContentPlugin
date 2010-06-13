@@ -19,7 +19,7 @@ register_shutdown_function('ioEditableContentPlugin_cleanup');
 
 require_once dirname(__FILE__).'/../fixtures/project/config/ProjectConfiguration.class.php';
 $configuration = ProjectConfiguration::getApplicationConfiguration($app, 'test', isset($debug) ? $debug : true);
-sfContext::createInstance($configuration);
+$context = sfContext::createInstance($configuration);
 new sfDatabaseManager($configuration);
 
 // so that all notices will appear
