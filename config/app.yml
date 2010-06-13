@@ -13,5 +13,7 @@ all:
     assets_web_root:     /ioEditableContentPlugin
 
     # whether or not to automatically include the following asset libraries
-    load_fancybox:      true
-    load_jquery:        true
+    load_fancybox:        true
+    load_jquery:          true
+    load_jquery_metadata: true
+    load_jquery_ui:       true

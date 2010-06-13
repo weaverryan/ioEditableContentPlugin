@@ -1,13 +1,13 @@
 /** frontend styles **/
-.<?php echo $componentCssClassName ?> {
+.<?php echo $editableClassName ?> {
   background-color: #ffe;
 }
 
-.<?php echo $componentCssClassName ?>:hover {
+.<?php echo $editableClassName ?>:hover {
   background-color: #ffd;
 }
 
-.<?php echo $componentCssClassName ?>:before {
+.<?php echo $editableClassName ?>:before {
   content: "[double-click to edit]";
   font-family: Arial, Helvetica, sans;
   font-size: 70%;

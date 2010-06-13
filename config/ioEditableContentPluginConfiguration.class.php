@@ -93,6 +93,18 @@ class ioEditableContentPluginConfiguration extends sfPluginConfiguration
       $response->addJavascript(sprintf('%s/js/jquery-1.4.2.min.js', $pluginWebRoot), 'last');
     }
 
+    // JQuery ui (just core and widget)
+    if (true === sfConfig::get('app_editable_content_load_jquery_ui'))
+    {
+      $response->addJavascript(sprintf('%s/js/jquery-ui-core-widget.min.js', $pluginWebRoot), 'last');
+    }
+
+    // JQuery metadata
+    if (true === sfConfig::get('app_editable_content_load_jquery_metadata'))
+    {
+      $response->addJavascript(sprintf('%s/js/jquery.metadata.js', $pluginWebRoot), 'last');
+    }
+
     // Fancybox
     if (true === sfConfig::get('app_editable_content_load_fancybox'))
     {
@@ -101,6 +113,8 @@ class ioEditableContentPluginConfiguration extends sfPluginConfiguration
     }
 
     // The admin javascript file is handled by symfony
+    $response->addJavascript(sprintf('%s/js/ioEditableContent.js', $pluginWebRoot), 'last');
+    $response->addJavascript(sprintf('%s/js/ioContentEditor.js', $pluginWebRoot), 'last');
     $response->addJavascript($context->getController()->genUrl('@editable_content_admin_js'), 'last');
 
     // The admin css file is handled by symfony

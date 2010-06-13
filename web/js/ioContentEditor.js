@@ -1,0 +1,146 @@
+(function($) {
+
+$.widget('ui.ioContentEditor', {
+  
+  options: {
+    slotType:   null
+  },
+  
+  _create: function() {
+    this.initialize();
+  },
+  
+  initialize: function() {
+    var self = this;
+    
+    // register the ajax form submit event
+    this._ajaxForm();
+    
+    // hook up the cancel button
+    $('input.cancel', this.getForm()).click(function() {
+      // trigger a close event
+      
+      self.element.trigger('close');
+      return false;
+    });
+    
+    // register the ajax response event
+    this._bindAjaxResponseEvent();
+    
+    this.getForm().trigger('ajaxResponseSuccess');
+  },
+  
+  _ajaxForm: function() {
+    // Attach the form ajax submit event to the form
+    
+    var self = this;
+    var form = this.getForm();
+    
+    form.submit(function() {
+      self.block();
+      
+      // trigger the event, allow anybody to prep anything
+      $(this).trigger('preFormSubmit');
+
+      $.post(form.attr('action'), form.serialize(), function(result){
+        if (result.error != '') {
+          // display some sort of error
+          //alert(result.error);
+        }
+
+        $('.form_body', form).html(result.response);
+        form.trigger('ajaxResponseSuccess');
+        self.unblock();
+      }, 'json');
+      
+      return false;
+    });
+  },
+  
+  _bindAjaxResponseEvent: function() {
+    // Creates an ajaxResponseSuccess, which should be triggered whenever
+    // the contents of the form (.form_body) are ajaxed
+    
+    var self = this;
+    var form = this.getForm();
+    
+    // register the ajaxSuccess function on this editor
+    form.bind('ajaxResponseSuccess', function() {
+      self.block();
+      
+      // initialize any slot-specific functionality if it exists
+      var formClass = 'sfSympalSlot'+self.option('slotType');
+      if ($.isFunction(self.element[formClass]))
+      {
+        self.element[formClass](self);
+      }
+      
+      // Keep track of the currently focused editor
+      $('input:text, textarea', form).focus(function() {
+        currentlyFocusedSympalEditor = $(this);
+      });
+      
+      self.unblock();
+    }); // end ajaxResponseSuccess
+  },
+  
+  block: function() {
+    // don't do anything if blockUI isn't available
+    if (!$.isFunction('blockUI'))
+    {
+      return;
+    }
+
+    // If we're not working on a block element, we've gotta block the whole page
+    if (this.isBlock())
+    {
+      // you actually want to block the parent, (i.e. #facebox-wrapper)
+      this.element.parent().block();
+    }
+    else
+    {
+      $.blockUI();
+    }
+  },
+  
+  unblock: function() {
+    // don't do anything if blockUI isn't available
+    if (!$.isFunction('blockUI'))
+    {
+      return;
+    }
+
+    if (this.isBlock())
+    {
+      this.element.parent().unblock();
+    }
+    else
+    {
+      $.unblockUI();
+    }
+  },
+  
+  isBlock: function() {
+    return (this.element.css('display') == 'block');
+  },
+  
+  getForm: function() {
+    if (!this.option('form'))
+    {
+      this._setOption('form', $('form', this.element));
+    }
+    
+    return this.option('form');
+  },
+  
+  destroy: function() {
+    // unbind all the close events
+    this.getForm().unbind('close');
+    
+    // destroy this widget
+    $.Widget.prototype.destroy.apply(this, arguments);
+  }
+});
+
+
+})(jQuery);

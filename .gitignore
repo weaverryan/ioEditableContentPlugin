@@ -1,4 +1,5 @@
 test/fixtures/project/cache
 test/fixtures/project/data/test.sqlite
 test/fixtures/project/data/sql
+test/fixtures/project/log
 base

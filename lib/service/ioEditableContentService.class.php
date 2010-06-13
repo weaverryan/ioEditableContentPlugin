@@ -22,6 +22,18 @@ class ioEditableContentService
   protected $_options = array();
 
   /**
+   * The valid options that can be passes in through the attributes array
+   *
+   * @var array
+   */
+  protected $_validOptions = array(
+    'partial',
+    'form',
+    'form_partial',
+    'mode',
+  );
+
+  /**
    * Class constructor
    *
    * @param  string $editableClassName  The class name to give editable content areas
@@ -41,27 +53,40 @@ class ioEditableContentService
    *   * form    - A form class to use for editing the content. The form class
    *               will be stripped to only include the given content. To
    *               edit entire forms, use get_editable_form().
+   *   * form_partial - The partial used to render the fields of the form
    *   * mode    - Which type of editor to load: fancybox(default)|inline
    *
-   * @param string  $tag      The tag to render (e.g. div, a, span)
-   * @param mixed   $obj      A Doctrine/Propel record
-   * @param string  $field    The name of the content to edit & render
-   * @param array   $options  The options / attributes array (see above)
+   * @param string  $tag        The tag to render (e.g. div, a, span)
+   * @param mixed   $obj        A Doctrine/Propel record
+   * @param mixed   $fields     The field or fields to edit
+   * @param array   $attributes The options / attributes array (see above)
    * @param sfBasicSecurityUser $user The user we're rendering for
    * 
    * @return string
    */
-  public function getEditableContentTag($tag, $obj, $field, $options = array())
+  public function getEditableContentTag($tag, $obj, $fields, $attributes = array())
   {
+    if (!is_object($obj))
+    {
+      throw new sfException('Non-object passed, expected a Doctrine or propel object.');
+    }
     sfApplicationConfiguration::getActive()->loadHelpers('Tag');
 
-    // extract the partial, form and mode variables
-    $partial = _get_option($options, 'partial');
-    $form = _get_option($options, 'form');
-    $mode = _get_option($options, $this->getOption('edit_mode', 'fancybox'));
+    // make sure that fields is an array
+    $fields = (array) $fields;
+
+    // extract the option values, remove from the attributes array
+    $options = array();
+    $options['mode'] = _get_option($attributes, 'edit_mode', $this->getOption('edit_mode', 'fancybox'));
+    foreach ($this->_validOptions as $validOption)
+    {
+      if (isset($attributes[$validOption]))
+      {
+        $options[$validOption] = _get_option($attributes, $validOption);
+      }
+    }
 
     // set the attributes variable, save the classes as an array for easier processing
-    $attributes = $options;
     $classes = isset($attributes['class']) ? explode(' ', $attributes['class']) : array();
 
     // add in the classes needed to activate the editable content
@@ -69,34 +94,24 @@ class ioEditableContentService
     {
       // setup the editable class
       $classes[] = $this->getOption('editable_class_name', 'io_editable_content');
-      $classes[] = $mode;
 
       // setup an options array to be serialized as a class (jquery.metadata)
-      $options = array();
       $options['model'] = $this->_getObjectClass($obj);
       $options['pk'] = $this->_getPrimaryKey($obj);
-
-      // if the partial is set, add it to the options
-      if ($partial)
-      {
-        $options['partial'] = $partial;
-      }
-
-      // if the form is set, add it to the options
-      if ($form)
-      {
-        $options['form'] = $form;
-      }
+      $options['fields'] = $fields;
 
       $classes[] = json_encode($options);
     }
+
+    // render the html for this content tag
+    $partial = isset($options['partial']) ? $options['partial'] : null;
+    $content = $this->getContent($obj, $fields, $partial);
 
     // if we have some classes, set them to the attributes
     if (count($classes) > 0)
     {
       $attributes['class'] = implode(' ', $classes);
     }
-    $content = $this->_getContent($obj, $field);
 
     return content_tag($tag, $content, $attributes);
   }
@@ -121,16 +136,27 @@ class ioEditableContentService
    * Returns the content given an orm object and field name
    *
    * @param  mixed $obj     The Doctrine/propel object that houses the content 
-   * @param  string $field  The name of the field on the model to use for content
+   * @param  array $fields  The name of the fields on the model to use for content
+   * @param  string $partial Optional partial to use for rendering
    *
    * @todo Make this work with propel
    * @return string
    */
-  protected function _getContent($obj, $field)
+  public function getContent($obj, $fields, $partial = null)
   {
+    if (count($fields) > 1)
+    {
+      if (!$partial)
+      {
+        throw new sfException('Multi-field content areas must pass a partial to be rendered with.');
+      }
 
+      sfApplicationConfiguration::getActive()->loadHelpers('Partial');
 
-    if ($content = $obj->get($field))
+      return get_partial($partial, array('obj' => $obj));
+    }
+
+    if ($content = $obj->get($fields[0]))
     {
       return $content;
     }

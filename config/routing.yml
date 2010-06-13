@@ -9,13 +9,18 @@ editable_content_admin_js:
   param: { module: ioEditableContent, action: js, sf_format: js }
 
 # retrieves the editable form area
-editable_content_service_get:
-  url:   /service/contents/get
-  param: { module: ioEditableContent, action: get }
+editable_content_service_form:
+  url:   /service/content/form
+  param: { module: ioEditableContent, action: form }
 
-# saves the editable form area
+# handles the form submit post
 editable_content_service_update:
-  url:   /service/contents/update
-  param: { module: ioEditableContent, action: update, sf_format: json }
-  requirement:
-    sf_method: [post]
+  url:   /service/content/update
+  param: { module: ioEditableContent, action: update }
+  requirements:
+    sf_method:  [post]
+
+# render a particular editable content area
+editable_content_service_show:
+  url:   /service/content/show
+  param: { module: ioEditableContent, action: show }
