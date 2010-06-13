@@ -33,12 +33,18 @@ class BaseioEditableContentActions extends sfActions
    */
   public function executeForm(sfWebRequest $request)
   {
-    $this->_setupVariables($request);
+    if (!$this->_setupVariables($request))
+    {
+      return sfView::NONE;
+    }
   }
 
   public function executeUpdate(sfWebRequest $request)
   {
-    $this->_setupVariables($request);
+    if (!$this->_setupVariables($request))
+    {
+      return sfView::NONE;
+    }
     $this->form->bind($request->getParameter($this->form->getName()));
 
     $json = array();
@@ -68,7 +74,10 @@ class BaseioEditableContentActions extends sfActions
    */
   public function executeShow(sfWebRequest $request)
   {
-    $this->_setupVariables($request);
+    if (!$this->_setupVariables($request))
+    {
+      return sfView::NONE;
+    }
     $service = $this->_getEditableContentService();
 
     // render the content of the tag
@@ -94,7 +103,7 @@ class BaseioEditableContentActions extends sfActions
 
     $this->formClass = $request->getParameter('form', $this->model.'Form');
     $this->formPartial = $request->getParameter('form_partial', 'ioEditableContent/formFields');
-    $this->fields = $request->getParameter('fields');
+    $this->fields = $request->getParameter('fields', array());
 
     $this->partial = $request->getParameter('partial');
 
@@ -106,7 +115,7 @@ class BaseioEditableContentActions extends sfActions
     if (!class_exists($this->formClass))
     {
       $this->renderText(sprintf('<div>Cannot find form class "%s"</div>', $this->formClass));
-      return sfView::NONE;
+      return false;
     }
 
     $this->form = new $this->formClass($this->object);
@@ -114,6 +123,8 @@ class BaseioEditableContentActions extends sfActions
     {
       $this->form->useFields($this->fields);
     }
+
+    return true;
   }
 
 
