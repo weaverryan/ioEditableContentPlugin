@@ -108,7 +108,7 @@ class BaseioEditableContentActions extends sfActions
 
     $this->formClass = $request->getParameter('form', $this->model.'Form');
     $this->formPartial = $request->getParameter('form_partial', 'ioEditableContent/formFields');
-    $this->fields = $request->getParameter('fields', array());
+    $this->fields = (array)$request->getParameter('fields', array());
 
     $this->partial = $request->getParameter('partial');
 
