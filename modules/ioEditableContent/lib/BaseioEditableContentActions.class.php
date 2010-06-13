@@ -33,6 +33,7 @@ class BaseioEditableContentActions extends sfActions
    */
   public function executeForm(sfWebRequest $request)
   {
+    $this->_checkCredentials();
     if (!$this->_setupVariables($request))
     {
       return sfView::NONE;
@@ -41,6 +42,7 @@ class BaseioEditableContentActions extends sfActions
 
   public function executeUpdate(sfWebRequest $request)
   {
+    $this->_checkCredentials();
     if (!$this->_setupVariables($request))
     {
       return sfView::NONE;
@@ -76,6 +78,7 @@ class BaseioEditableContentActions extends sfActions
    */
   public function executeShow(sfWebRequest $request)
   {
+    $this->_checkCredentials();
     if (!$this->_setupVariables($request))
     {
       return sfView::NONE;
