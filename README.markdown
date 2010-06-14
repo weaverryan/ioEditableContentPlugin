@@ -1,5 +1,7 @@
 ioEditableContentPlugin
-=====================
+=======================
+
+This plugin is young - use at your own risk. I welcome any feedback.
 
 Allows for frontend/inline editing of fields and forms. The goal is to
 allow content to be inline-editable without getting in the way of the
@@ -208,7 +210,7 @@ The fine details
 
 Please clone and improve this plugin! Any feedback is welcomed - including
 design related :). If you have any ideas, notice any bugs, or have any
-ideas, you can reach me at ryan [at] thatsquality.com.
+ideas, you can reach me at ryan [at] thatsquality.com or @weaverryan.
 
 A bug tracker is available at
 [http://redmine.sympalphp.org/projects/editable-content](http://redmine.sympalphp.org/projects/editable-content)
