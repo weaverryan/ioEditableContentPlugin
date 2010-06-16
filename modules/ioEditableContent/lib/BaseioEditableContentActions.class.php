@@ -20,12 +20,14 @@ class BaseioEditableContentActions extends sfActions
   public function executeCss(sfWebRequest $request)
   {
     $this->_checkCredentials();
+    $this->setLayout(false);
   }
 
   // the dynamic js file
   public function executeJs(sfWebRequest $request)
   {
     $this->_checkCredentials();
+    $this->setLayout(false);
   }
 
   /**
