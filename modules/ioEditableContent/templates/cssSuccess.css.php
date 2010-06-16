@@ -1,10 +1,11 @@
 /** frontend styles **/
 .<?php echo $editableClassName ?> {
-  background-color: #ffe;
 }
 
 .<?php echo $editableClassName ?>:hover {
-  background-color: #ffd;
+  filter:alpha(opacity=50);
+  -moz-opacity:0.5;
+  opacity: 0.5;
 }
 
 .<?php echo $editableClassName ?>:before {
