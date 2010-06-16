@@ -63,8 +63,8 @@ $.widget('ui.ioEditableContent', {
     var editor = this.getEditor();
     this._setOption('content_editor', null);
 
-    
-    self.blockUI();
+    // this seems unnecessary, we'll wait and see.
+    //self.blockUI();
     
     // ajax in the content, and then set things back up
     $(self.element).load(
@@ -78,8 +78,9 @@ $.widget('ui.ioEditableContent', {
         
         // destroy the editor
         editor.ioContentEditor('destroy');
-        
-        self.unblockUI();
+
+        // this seems unnecessary, we'll wait and see.
+        //self.unblockUI();
         
         // throw a close event to listen onto
         self.element.trigger('closeEditor');
