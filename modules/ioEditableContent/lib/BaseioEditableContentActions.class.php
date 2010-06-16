@@ -42,6 +42,9 @@ class BaseioEditableContentActions extends sfActions
     }
   }
 
+  /**
+   * Handles the form submit for the form
+   */
   public function executeUpdate(sfWebRequest $request)
   {
     $this->_checkCredentials();
@@ -49,13 +52,26 @@ class BaseioEditableContentActions extends sfActions
     {
       return sfView::NONE;
     }
+
     $this->form->bind($request->getParameter($this->form->getName()));
 
+    // response is a json with an error key
     $json = array();
     if ($this->form->isValid())
     {
       $json['error'] = false;
+
+      $isNew = ($this->form->isNew());
       $this->form->save();
+
+      // report back the pk so we can update the original metadata value
+      if ($isNew)
+      {
+        // dirty way to get the primary key, and then get its value - is there a better way?
+        $pkField = $this->form->getObject()->getTable()->getIdentifierColumnNames();
+        $pkField = $pkField[0];
+        $json['pk'] = $this->form->getObject()->get($pkField);
+      }
     }
     else
     {
@@ -117,7 +133,10 @@ class BaseioEditableContentActions extends sfActions
     // @todo make this work with propel
     $this->forward404Unless($this->model && $this->pk);
     $this->object = Doctrine_Core::getTable($this->model)->find($this->pk);
-    $this->forward404Unless($this->object);
+    if (!$this->object)
+    {
+      $this->object = new $this->model();
+    }
 
     if (!class_exists($this->formClass))
     {
@@ -130,6 +149,8 @@ class BaseioEditableContentActions extends sfActions
     {
       $this->form->useFields($this->fields);
     }
+
+    $this->setLayout(false);
 
     return true;
   }

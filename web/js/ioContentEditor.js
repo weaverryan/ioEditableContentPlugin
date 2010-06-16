@@ -50,6 +50,7 @@ $.widget('ui.ioContentEditor', {
 
         $('.form_body', form).html(result.response);
         form.trigger('ajaxResponseSuccess');
+        form.trigger('formPostResponse', result);
         self.unblock();
       }, 'json');
       

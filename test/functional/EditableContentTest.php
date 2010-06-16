@@ -178,3 +178,27 @@ $browser->info('  4.3 - Goto the show page for this content area')
     ->matches('/new body/')
   ->end()
 ;
+
+
+Doctrine_Query::create()->from('Blog')->delete()->execute();
+$browser->info('5 - Fill out a form with a new object')
+  ->get('/service/content/form?model=Blog&pk=null&fields[]=title')
+
+  ->with('response')->begin()
+    ->isStatusCode(200)
+  ->end()
+
+  ->click('save', array('blog' => array(
+    'title' => 'new blog post',
+  )))
+
+  ->with('doctrine')->begin()
+    ->check('Blog', array('title' => 'new blog post'))
+  ->end()
+;
+
+$blog = Doctrine_Query::create()->from('Blog')->fetchOne();
+$browser->info('  5.1 - check the json response for the pk key');
+$response = $browser->getResponse()->getContent();
+$json = json_decode($response);
+$browser->test()->is($json->pk, $blog->id, '->pk is the id of the new Blog entry');

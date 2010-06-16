@@ -107,6 +107,15 @@ $.widget('ui.ioEditableContent', {
       self.closeEditor();
     });
 
+    // listen to the form response so we can repopulate the pk if needed to the metadata
+    // necessary or the show request won't have the correct pk
+    editorSelector.bind('formPostResponse', function(e, data) {
+      if (data.pk)
+      {
+        self.option('pk', data.pk);
+      }
+    });
+
     // store the content_editor
     this._setOption('content_editor', editorSelector);
     
