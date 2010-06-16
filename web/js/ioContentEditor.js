@@ -72,11 +72,10 @@ $.widget('ui.ioContentEditor', {
   
   block: function() {
     // don't do anything if blockUI isn't available
-    if (!$.isFunction('blockUI'))
+    if (!$.blockUI)
     {
       return;
     }
-
     // If we're not working on a block element, we've gotta block the whole page
     if (this.isBlock())
     {
@@ -91,7 +90,7 @@ $.widget('ui.ioContentEditor', {
   
   unblock: function() {
     // don't do anything if blockUI isn't available
-    if (!$.isFunction('blockUI'))
+    if (!$.blockUI)
     {
       return;
     }

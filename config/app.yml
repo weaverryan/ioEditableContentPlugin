@@ -17,3 +17,4 @@ all:
     load_jquery:          true
     load_jquery_metadata: true
     load_jquery_ui:       true
+    load_jquery_blockui:  true   # optional, for loading messages

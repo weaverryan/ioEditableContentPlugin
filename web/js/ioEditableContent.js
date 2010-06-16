@@ -188,14 +188,14 @@ $.widget('ui.ioEditableContent', {
   },
 
   blockUI: function() {
-    if ($.isFunction('blockUI'))
+    if ($.blockUI)
     {
       $.blockUI();
     }
   },
 
   unblockUI: function() {
-    if ($.isFunction('unblockUI'))
+    if ($.blockUI)
     {
       $.unblockUI();
     }
