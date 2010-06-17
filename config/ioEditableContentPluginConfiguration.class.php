@@ -105,6 +105,12 @@ class ioEditableContentPluginConfiguration extends sfPluginConfiguration
       $response->addJavascript(sprintf('%s/js/jquery.metadata.js', $pluginWebRoot), 'last');
     }
 
+    // JQuery form
+    if (true === sfConfig::get('app_editable_content_load_jquery_form'))
+    {
+      $response->addJavascript(sprintf('%s/js/jquery.form.js', $pluginWebRoot), 'last');
+    }
+
     // JQuery blockUI
     if (true === sfConfig::get('app_editable_content_load_jquery_blockui'))
     {

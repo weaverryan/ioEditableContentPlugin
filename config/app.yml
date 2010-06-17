@@ -16,5 +16,6 @@ all:
     load_fancybox:        true
     load_jquery:          true
     load_jquery_metadata: true
+    load_jquery_form:     true
     load_jquery_ui:       true
     load_jquery_blockui:  true   # optional, for loading messages
