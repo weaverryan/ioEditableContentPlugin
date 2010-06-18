@@ -18,7 +18,7 @@ editable_content_service_update:
   url:   /service/content/update
   param: { module: ioEditableContent, action: update }
   requirements:
-    sf_method:  [post]
+    sf_method:  [put, post]
 
 # render a particular editable content area
 editable_content_service_show:
