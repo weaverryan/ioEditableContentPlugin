@@ -53,7 +53,8 @@ class BaseioEditableContentActions extends sfActions
       return sfView::NONE;
     }
 
-    $this->form->bind($request->getParameter($this->form->getName()));
+    $formName = $this->form->getName();
+    $this->form->bind($request->getParameter($formName), $request->getFiles($formName));
 
     // response is a json with an error key
     $json = array();
@@ -86,7 +87,19 @@ class BaseioEditableContentActions extends sfActions
     // the form body consists of both global errors and the form field partial
     $json['response'] = $this->form->renderGlobalErrors();
     $json['response'] .= $this->getPartial($formPartial);
-    $this->renderText(json_encode($json));
+    $text = json_encode($json);
+
+    /*
+     * If there is a file upload field, then this was submitted via an
+     * iframe. To handle json response, the jquery form plugin allows us
+     * to return the json inside a textarea tag
+     */
+    if ($this->form->isMultipart())
+    {
+      $text = '<textarea>'.$text.'</textarea>';
+    }
+
+    $this->renderText($text);
 
     return sfView::NONE;
   }
