@@ -129,7 +129,7 @@ $.widget('ui.ioEditableContent', {
     
     control_events = {};
     control_events['dblclick'] = function() {
-      self.openEditor()
+      self.openEditor();
     }
     this._setOption('control_events', control_events);
   },
@@ -142,11 +142,16 @@ $.widget('ui.ioEditableContent', {
       self.element.bind(key, value);
     });
 
-   // Link deactivation
+   // Deactivate any links, clicking cancel will bring up the editor
     $('a', self.element).click(function() {
       if (confirm('Open link in a new window?')) {
         window.open($(this).attr('href'));
       }
+      else
+      {
+        self.openEditor()
+      }
+
       return false;
     });
   },
