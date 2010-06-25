@@ -63,8 +63,8 @@ $.widget('ui.ioEditableContent', {
     var editor = this.getEditor();
     this._setOption('content_editor', null);
 
-    
-    self.blockUI();
+    // this seems unnecessary, we'll wait and see.
+    //self.blockUI();
     
     // ajax in the content, and then set things back up
     $(self.element).load(
@@ -78,8 +78,9 @@ $.widget('ui.ioEditableContent', {
         
         // destroy the editor
         editor.ioContentEditor('destroy');
-        
-        self.unblockUI();
+
+        // this seems unnecessary, we'll wait and see.
+        //self.unblockUI();
         
         // throw a close event to listen onto
         self.element.trigger('closeEditor');
@@ -106,6 +107,15 @@ $.widget('ui.ioEditableContent', {
       self.closeEditor();
     });
 
+    // listen to the form response so we can repopulate the pk if needed to the metadata
+    // necessary or the show request won't have the correct pk
+    editorSelector.bind('formPostResponse', function(e, data) {
+      if (data.pk)
+      {
+        self.option('pk', data.pk);
+      }
+    });
+
     // store the content_editor
     this._setOption('content_editor', editorSelector);
     
@@ -119,7 +129,7 @@ $.widget('ui.ioEditableContent', {
     
     control_events = {};
     control_events['dblclick'] = function() {
-      self.openEditor()
+      self.openEditor();
     }
     this._setOption('control_events', control_events);
   },
@@ -132,11 +142,16 @@ $.widget('ui.ioEditableContent', {
       self.element.bind(key, value);
     });
 
-   // Link deactivation
+   // Deactivate any links, clicking cancel will bring up the editor
     $('a', self.element).click(function() {
       if (confirm('Open link in a new window?')) {
         window.open($(this).attr('href'));
       }
+      else
+      {
+        self.openEditor()
+      }
+
       return false;
     });
   },
@@ -188,14 +203,14 @@ $.widget('ui.ioEditableContent', {
   },
 
   blockUI: function() {
-    if ($.isFunction('blockUI'))
+    if ($.blockUI)
     {
       $.blockUI();
     }
   },
 
   unblockUI: function() {
-    if ($.isFunction('unblockUI'))
+    if ($.blockUI)
     {
       $.unblockUI();
     }

@@ -80,6 +80,9 @@ You an also specify attributes that should be on the main `h1` tag:
 
     <h1 class="header">Homepage</h1>
 
+>The `$blog` object doesn't have to be saved to the database yet - it could
+>be a new `Blog`. New objects are saved to the database correctly.
+
 ### A more complex example
 
 You can also choose to edit more than one field at once in your form. An

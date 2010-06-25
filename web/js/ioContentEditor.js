@@ -42,16 +42,24 @@ $.widget('ui.ioContentEditor', {
       // trigger the event, allow anybody to prep anything
       $(this).trigger('preFormSubmit');
 
-      $.post(form.attr('action'), form.serialize(), function(result){
-        if (result.error != '') {
+      $(this).ajaxSubmit({
+        dataType: 'json',
+        error: function(xhr, textStatus, errorThrown) {
+          self.unblock();
           // display some sort of error
-          //alert(result.error);
-        }
+        },
+        success: function(responseText, statusText, xhr) {
+          if (responseText.error != '') {
+            // display some sort of error
+            //alert(result.error);
+          }
 
-        $('.form_body', form).html(result.response);
-        form.trigger('ajaxResponseSuccess');
-        self.unblock();
-      }, 'json');
+          $('.form_body', form).html(responseText.response);
+          form.trigger('ajaxResponseSuccess');
+          form.trigger('formPostResponse', responseText);
+          self.unblock();
+        }
+      });
       
       return false;
     });
@@ -72,11 +80,10 @@ $.widget('ui.ioContentEditor', {
   
   block: function() {
     // don't do anything if blockUI isn't available
-    if (!$.isFunction('blockUI'))
+    if (!$.blockUI)
     {
       return;
     }
-
     // If we're not working on a block element, we've gotta block the whole page
     if (this.isBlock())
     {
@@ -91,7 +98,7 @@ $.widget('ui.ioContentEditor', {
   
   unblock: function() {
     // don't do anything if blockUI isn't available
-    if (!$.isFunction('blockUI'))
+    if (!$.blockUI)
     {
       return;
     }

@@ -1,4 +1,4 @@
-<form action="<?php echo url_for('@editable_content_service_update') ?>" method="post" class="editable_content_form">
+<?php echo $form->renderFormTag(url_for('@editable_content_service_update'), array('class' => 'editable_content_form')) ?>
 
   <input type="hidden" name="model" value="<?php echo $model ?>" />
   <input type="hidden" name="pk" value="<?php echo $pk ?>" />
