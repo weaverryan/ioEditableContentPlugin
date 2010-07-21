@@ -142,6 +142,9 @@ $.widget('ui.ioEditableContent', {
       self.element.bind(key, value);
     });
 
+    // remove the class that says the editor is opened
+    self.element.removeClass('editor_opened');
+
    // Deactivate any links, clicking cancel will bring up the editor
     $('a', self.element).click(function() {
       if (confirm('Open link in a new window?')) {
@@ -163,6 +166,9 @@ $.widget('ui.ioEditableContent', {
     $.each(this.option('control_events'), function(key, value) {
       self.element.unbind(key, value);
     });
+
+    // add a class indicating the editor is opened
+    self.element.addClass('editor_opened')
   },
 
   _getFormUrl: function(){

@@ -7,6 +7,12 @@
   -moz-opacity:0.5;
   opacity: 0.5;
 }
+/* don't be transparent when the editor is opened */
+.editor_opened:hover {
+  filter:alpha(opacity=100);
+  -moz-opacity:1.0;
+  opacity: 1.0;
+}
 
 .<?php echo $editableClassName ?>:before {
   content: "[double-click to edit]";
