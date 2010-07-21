@@ -1,6 +1,6 @@
 # route to dynamic css file
 editable_content_admin_css:
-  url:   /js/editable_content.css
+  url:   /css/editable_content.css
   param: { module: ioEditableContent, action: css, sf_format: css }
 
 # route to dynamic js file
