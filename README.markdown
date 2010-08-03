@@ -208,6 +208,25 @@ The `admin_credential` option specifies the user credential a user must
 have in order to see content editor. If set to `false`, all authenticated
 users will be able to edit the content.
 
+Using with CKEditor
+-------------------
+
+To use the plugin with CKEditor, simply change the widget in your form to
+be a CKEditor widget. A great plugin for doing this is
+[sfCKEditorPlugin](http://www.symfony-project.org/plugins/sfCKEditorPlugin).
+
+While the above will work for normal forms, it will not persist correctly
+for any ajax forms (which this plugin uses). By including the following
+javascript, the CKEditor will persist correctly:
+
+    jQuery(document).ready(function(){
+      $('.io_editable_content').bind('preFormSubmit', function(event){
+        jQuery.each(CKEDITOR.instances, function(index, value) {
+          value.updateElement();
+        });
+      });
+    });
+
 The fine details
 ----------------
 

@@ -1,3 +1,6 @@
+<?php include_stylesheets_for_form($form) ?>
+<?php include_javascripts_for_form($form) ?>
+
 <?php echo $form->renderFormTag(url_for('@editable_content_service_update'), array('class' => 'editable_content_form')) ?>
 
   <input type="hidden" name="model" value="<?php echo $model ?>" />
