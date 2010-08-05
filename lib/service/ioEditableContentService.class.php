@@ -149,6 +149,11 @@ class ioEditableContentService
    */
   public function getContent($obj, $fields, $partial = null)
   {
+    if ($obj instanceof sfOutputEscaper)
+    {
+      $obj = $obj->getRawValue();
+    }
+
     if ($partial)
     {
       sfApplicationConfiguration::getActive()->loadHelpers('Partial');
