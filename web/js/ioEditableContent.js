@@ -22,7 +22,11 @@ $.widget('ui.ioEditableContent', {
      */
     if (this.option('mode') == 'inline')
     {
-      self.element.load(self._getFormUrl(), function() {
+      self.element.load(self._getFormUrl(), function(responseText, textStatus, XMLHttpRequest) {
+        if (textStatus == 'error')
+        {
+          self.element.html('Editor could not be loaded with error code '+XMLHttpRequest.status+': '+XMLHttpRequest.statusText+'<br/><br/>Url: '+self._getFormUrl());
+        }
         self._initializeEditor(self.element);
       });
     }
