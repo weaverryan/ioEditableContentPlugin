@@ -58,3 +58,13 @@ function get_editable_content_service()
     ->getPluginConfiguration('ioEditableContentPlugin')
     ->getEditableContentService();
 }
+
+/**
+ * Return whether or not to show the editor for the current user
+ *
+ * @return boolean
+ */
+function should_show_io_editor()
+{
+  return get_editable_content_service()->shouldShowEditor();
+}
