@@ -70,9 +70,21 @@ function should_show_io_editor()
 }
 
 /**
- * needs documentation
+ * Iterates through and renders a collection of objects, each wrapped with
+ * its own editable_content_tag.
+ *
+ * The advantage of using this method instead of manually iterating through
+ * a collection and using editable_content_tag() is that this method adds
+ * collection-specifically functionality such as "Add new" and sortable.
+ *
+ * @param string $outer_tag The tag that should surround the whole collection (e.g. ul)
+ * @param mixed $collection The Doctrine_Collection to iterate and render
+ * @param array $options    An array of options to configure the outer tag
+ * @param string $inner_tag The tag to render around each item (@see editable_content_tag)
+ * @param mixed $fields     The field or fields to render and edit for each item (@see editable_content_tag)
+ * @param array $inner_options Option on each internal editable_content_tag (@see editable_content_tag)
  */
-function editable_content_list($outer_tag, Doctrine_Collection $collection, array $options, $inner_tag, array $fields, array $inner_options)
+function editable_content_list($outer_tag, $collection, array $options, $inner_tag, $fields, array $inner_options)
 {
   // ->getEditableContentService()->getEditableContentList() ???
 
@@ -86,13 +98,6 @@ function editable_content_list($outer_tag, Doctrine_Collection $collection, arra
   $attributes = $options;
   unset($attributes['sortable']);
   
-  // inner_options
-  $inner_options['partial'] = (isset($inner_options['partial'])) ? $inner_options['partial'] : null;
-  
-  // extract inner_attributes from inner_options
-  $inner_attributes = $inner_options;
-  unset($inner_attributes['partial']);
-  
   return include_partial(
     'ioEditableContent/list',
     array(
@@ -103,9 +108,7 @@ function editable_content_list($outer_tag, Doctrine_Collection $collection, arra
       'inner_tag'        => $inner_tag,
       'fields'           => $fields,
       'inner_options'    => $inner_options,
-      'inner_attributes' => $inner_attributes,
       'class'            => $class,
-      'var'              => sfInflector::underscore($class),
     )
   );
 }
