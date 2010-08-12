@@ -1,3 +1,6 @@
+<?php $inner_options = ($inner_options instanceof sfOutputEscaper) ? $inner_options->getRawValue() : $inner_options ?>
+<?php $fields = ($fields instanceof sfOutputEscaper) ? $fields->getRawValue() : $fields ?>
+
 <<?php echo $outer_tag ?> class="editable_content_list">
 <?php foreach ($collection as $obj): ?>
   <?php $inner_options['id'] = 'item_'.$obj->id ?>
