@@ -104,9 +104,13 @@ function editable_content_list($outer_tag, $collection, array $options, $inner_t
       'outer_tag'        => $outer_tag,
       'collection'       => $collection,
       'attributes'       => $attributes,
+      'sortable'         => $sortable,
+      'with_new'         => $with_new,
+
       'inner_tag'        => $inner_tag,
       'fields'           => $fields,
       'inner_options'    => $inner_options,
+
       'class'            => $class,
     )
   );
