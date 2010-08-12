@@ -8,6 +8,10 @@
   <?php endforeach; ?>
 </<?php echo $outer_tag ?>>
 
+<?php if ($with_new): ?>
+  <?php echo editable_content_tag($inner_tag, new $class(), $fields, $inner_options) ?>
+<?php endif; ?>
+
 <?php if($sortable): ?>
   <script type="text/javascript">
     $(function() {
