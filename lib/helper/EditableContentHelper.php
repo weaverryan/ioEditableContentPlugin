@@ -68,3 +68,44 @@ function should_show_io_editor()
 {
   return get_editable_content_service()->shouldShowEditor();
 }
+
+/**
+ * needs documentation
+ */
+function editable_content_list($outer_tag, Doctrine_Collection $collection, array $options, $inner_tag, array $fields, array $inner_options)
+{
+  // ->getEditableContentService()->getEditableContentList() ???
+
+  // the class of the objects in the collection
+  $class = $collection->getTable()->getClassNameToReturn();
+  
+  // options
+  $options['sortable'] = (isset($options['sortable'])) ? $options['sortable'] : true;
+  
+  // extract attributes from options
+  $attributes = $options;
+  unset($attributes['sortable']);
+  
+  // inner_options
+  $inner_options['partial'] = (isset($inner_options['partial'])) ? $inner_options['partial'] : null;
+  
+  // extract inner_attributes from inner_options
+  $inner_attributes = $inner_options;
+  unset($inner_attributes['partial']);
+  
+  return include_partial(
+    'ioEditableContent/list',
+    array(
+      'outer_tag'        => $outer_tag,
+      'collection'       => $collection,
+      'options'          => $options,
+      'attributes'       => $attributes,
+      'inner_tag'        => $inner_tag,
+      'fields'           => $fields,
+      'inner_options'    => $inner_options,
+      'inner_attributes' => $inner_attributes,
+      'class'            => $class,
+      'var'              => sfInflector::underscore($class),
+    )
+  );
+}

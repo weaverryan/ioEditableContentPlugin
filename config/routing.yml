@@ -24,3 +24,10 @@ editable_content_service_update:
 editable_content_service_show:
   url:   /service/content/show
   param: { module: ioEditableContent, action: show }
+
+# post here to sort an editable content list
+editable_content_service_list_sort:
+  url:   /service/content/list/sort
+  param:
+    module: ioEditableContent
+    action: sort

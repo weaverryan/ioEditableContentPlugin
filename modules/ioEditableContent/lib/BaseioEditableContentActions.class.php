@@ -127,6 +127,33 @@ class BaseioEditableContentActions extends sfActions
   }
 
   /**
+   * Ajax action that sorts editable content list
+   */
+  public function executeSort(sfWebRequest $request)
+  {
+    // give me the class of the objects being sorted
+    $class = $request->getParameter('class');
+    
+    // give me an array where object id => position
+    $sort = array_flip($request->getParameter('item'));
+    
+    // give me a comma delimited id string
+    $ids = sprintf('(%s)', implode(',', array_keys($sort)));
+    
+    // retrieve the objects by the ids submitted
+    $objects = Doctrine_Query::create()->from($class.' c')->where('c.id IN '.$ids)->execute();
+    
+    // set the positions and save the objects
+    foreach($objects as $obj)
+    {
+      $obj->position = $sort[$obj->id];
+      $obj->save();
+    }
+    
+    return sfView::NONE;
+  }
+
+  /**
    * Returns the form object based on the request parameters
    *
    * @param sfWebRequest $request
@@ -167,8 +194,7 @@ class BaseioEditableContentActions extends sfActions
 
     return true;
   }
-
-
+  
   /**
    * Helper to forward 404 if the user doesn't have edit credentials
    */
