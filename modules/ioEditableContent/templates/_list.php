@@ -8,7 +8,7 @@
 <?php endforeach; ?>
 </<?php echo $outer_tag ?>>
 
-<?php if($options['sortable']): ?>
+<?php if($sortable): ?>
   <script type="text/javascript">
     $(function() {
       $(".editable_content_list").sortable({

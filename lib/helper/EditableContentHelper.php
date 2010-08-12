@@ -91,19 +91,18 @@ function editable_content_list($outer_tag, $collection, array $options, $inner_t
   // the class of the objects in the collection
   $class = $collection->getTable()->getClassNameToReturn();
   
-  // options
-  $options['sortable'] = (isset($options['sortable'])) ? $options['sortable'] : true;
+  // parse the options out of the options array
+  $sortable = _get_option($options, 'sortable', false);
+  $with_new = _get_option($options, 'with_new', false);
   
   // extract attributes from options
   $attributes = $options;
-  unset($attributes['sortable']);
   
   return include_partial(
     'ioEditableContent/list',
     array(
       'outer_tag'        => $outer_tag,
       'collection'       => $collection,
-      'options'          => $options,
       'attributes'       => $attributes,
       'inner_tag'        => $inner_tag,
       'fields'           => $fields,
