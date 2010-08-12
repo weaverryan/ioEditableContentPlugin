@@ -2,10 +2,10 @@
 <?php $fields = ($fields instanceof sfOutputEscaper) ? $fields->getRawValue() : $fields ?>
 
 <<?php echo $outer_tag ?> class="editable_content_list">
-<?php foreach ($collection as $obj): ?>
-  <?php $inner_options['id'] = 'item_'.$obj->id ?>
-  <?php echo editable_content_tag($inner_tag, $obj, $fields, $inner_options) ?>
-<?php endforeach; ?>
+  <?php foreach ($collection as $obj): ?>
+    <?php $inner_options['id'] = 'item_'.$obj->id ?>
+    <?php echo editable_content_tag($inner_tag, $obj, $fields, $inner_options) ?>
+  <?php endforeach; ?>
 </<?php echo $outer_tag ?>>
 
 <?php if($sortable): ?>
