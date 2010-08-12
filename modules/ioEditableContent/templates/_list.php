@@ -14,7 +14,9 @@
           var data = $(this).sortable('serialize');
           $.post(
             "<?php echo url_for('editable_content_service_list_sort') ?>?"+data,
-            {class:'<?php echo $class ?>'}
+            {
+              'class': '<?php echo $class ?>'
+            }
           );
         }
       });
