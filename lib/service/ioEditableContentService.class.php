@@ -115,7 +115,57 @@ class ioEditableContentService
 
     return content_tag($tag, $content, $attributes);
   }
-
+  
+  /**
+   * Iterates through and renders a collection of objects, each wrapped with
+   * its own editable_content_tag.
+   *
+   * The advantage of using this method instead of manually iterating through
+   * a collection and using editable_content_tag() is that this method adds
+   * collection-specific functionality such as "Add new" and sortable.
+   *
+   * @param string $outer_tag The tag that should surround the whole collection (e.g. ul)
+   * @param mixed $collection The Doctrine_Collection to iterate and render
+   * @param array $options    An array of options to configure the outer tag
+   * @param string $inner_tag The tag to render around each item (@see editable_content_tag)
+   * @param mixed $fields     The field or fields to render and edit for each item (@see editable_content_tag)
+   * @param array $inner_options Option on each internal editable_content_tag (@see editable_content_tag)
+   *
+   * @return string
+   */
+  public function getEditableContentList($outer_tag, $collection, $options, $inner_tag, $fields, $inner_options)
+  {
+    if(!($collection instanceof Doctrine_Collection))
+    {
+      throw new sfException('Second argument passed to Editable Content List was invalid, expected a Doctrine collection.');
+    }
+    
+    // the class of the objects in the collection
+    $class = $collection->getTable()->getClassNameToReturn();
+    
+    // parse the options out of the options array
+    $sortable = _get_option($options, 'sortable', false);
+    $with_new = _get_option($options, 'with_new', false);
+    
+    // extract attributes from options
+    $attributes = $options;
+    
+    return include_partial(
+      'ioEditableContent/list',
+      array(
+        'outer_tag'        => $outer_tag,
+        'collection'       => $collection,
+        'attributes'       => $attributes,
+        'sortable'         => $sortable,
+        'with_new'         => $with_new,
+        'inner_tag'        => $inner_tag,
+        'fields'           => $fields,
+        'inner_options'    => $inner_options,
+        'class'            => $class,
+      )
+    );
+  }
+  
   /**
    * Returns whether or not inline editing should be rendered for this request.
    *

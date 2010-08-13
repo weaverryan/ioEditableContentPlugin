@@ -8,11 +8,11 @@
   <?php endforeach; ?>
 </<?php echo $outer_tag ?>>
 
-<?php if ($with_new): ?>
+<?php if (should_show_io_editor() && $with_new): ?>
   <?php echo editable_content_tag($inner_tag, new $class(), $fields, $inner_options) ?>
 <?php endif; ?>
 
-<?php if($sortable): ?>
+<?php if(should_show_io_editor() && $sortable): ?>
   <script type="text/javascript">
     $(function() {
       $(".editable_content_list").sortable({
