@@ -135,11 +135,6 @@ class ioEditableContentService
    */
   public function getEditableContentList($outer_tag, $collection, $options, $inner_tag, $fields, $inner_options)
   {
-    if(!($collection instanceof Doctrine_Collection))
-    {
-      throw new sfException('Second argument passed to Editable Content List was invalid, expected a Doctrine collection.');
-    }
-    
     // the class of the objects in the collection
     $class = $collection->getTable()->getClassNameToReturn();
     
@@ -150,6 +145,10 @@ class ioEditableContentService
     // extract attributes from options
     $attributes = $options;
     
+    // new object
+    $new = new $class();
+    $new->title = "Add one";
+    
     return include_partial(
       'ioEditableContent/list',
       array(
@@ -158,6 +157,7 @@ class ioEditableContentService
         'attributes'       => $attributes,
         'sortable'         => $sortable,
         'with_new'         => $with_new,
+        'new'              => $new,
         'inner_tag'        => $inner_tag,
         'fields'           => $fields,
         'inner_options'    => $inner_options,

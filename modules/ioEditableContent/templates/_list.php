@@ -9,7 +9,7 @@
 </<?php echo $outer_tag ?>>
 
 <?php if (should_show_io_editor() && $with_new): ?>
-  <?php echo editable_content_tag($inner_tag, new $class(), $fields, $inner_options) ?>
+  <?php echo editable_content_tag($inner_tag, $new, $fields, $inner_options) ?>
 <?php endif; ?>
 
 <?php if(should_show_io_editor() && $sortable): ?>
