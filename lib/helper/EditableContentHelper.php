@@ -70,12 +70,7 @@ function should_show_io_editor()
 }
 
 /**
- * Iterates through and renders a collection of objects, each wrapped with
- * its own editable_content_tag.
- *
- * The advantage of using this method instead of manually iterating through
- * a collection and using editable_content_tag() is that this method adds
- * collection-specifically functionality such as "Add new" and sortable.
+ * Returns an editable list with markup necessary to allow edit, "add new" and sorting
  *
  * @param string $outer_tag The tag that should surround the whole collection (e.g. ul)
  * @param mixed $collection The Doctrine_Collection to iterate and render
@@ -83,35 +78,10 @@ function should_show_io_editor()
  * @param string $inner_tag The tag to render around each item (@see editable_content_tag)
  * @param mixed $fields     The field or fields to render and edit for each item (@see editable_content_tag)
  * @param array $inner_options Option on each internal editable_content_tag (@see editable_content_tag)
+ *
+ * @return string
  */
-function editable_content_list($outer_tag, $collection, array $options, $inner_tag, $fields, array $inner_options)
+function editable_content_list($outer_tag, $collection, $options, $inner_tag, $fields, $inner_options)
 {
-  // ->getEditableContentService()->getEditableContentList() ???
-
-  // the class of the objects in the collection
-  $class = $collection->getTable()->getClassNameToReturn();
-  
-  // parse the options out of the options array
-  $sortable = _get_option($options, 'sortable', false);
-  $with_new = _get_option($options, 'with_new', false);
-  
-  // extract attributes from options
-  $attributes = $options;
-  
-  return include_partial(
-    'ioEditableContent/list',
-    array(
-      'outer_tag'        => $outer_tag,
-      'collection'       => $collection,
-      'attributes'       => $attributes,
-      'sortable'         => $sortable,
-      'with_new'         => $with_new,
-
-      'inner_tag'        => $inner_tag,
-      'fields'           => $fields,
-      'inner_options'    => $inner_options,
-
-      'class'            => $class,
-    )
-  );
+  return get_editable_content_service()->getEditableContentList($outer_tag, $collection, $options, $inner_tag, $fields, $inner_options);
 }
