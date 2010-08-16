@@ -163,8 +163,8 @@ $.widget('ui.ioEditableContent', {
 
    // Deactivate any links, clicking cancel will bring up the editor
     $('a', self.element).click(function() {
-      if (confirm('Open link in a new window?')) {
-        window.open($(this).attr('href'));
+      if (confirm('Follow link? (ok to follow, cancel to edit this area)')) {
+        window.location($(this).attr('href'));
       }
       else
       {
