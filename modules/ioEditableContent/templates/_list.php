@@ -4,6 +4,13 @@
 <<?php echo $outer_tag ?> class="editable_content_list">
   <?php foreach ($collection as $obj): ?>
     <?php $inner_options['id'] = 'item_'.$obj->id ?>
+    <?php if(should_show_io_editor() && $with_delete): ?>
+      <a class="editable_content_list_delete"
+      rel="<?php echo $inner_options['id'] ?>"
+      href="<?php echo url_for('editable_content_service_list_delete', array('id' => $obj->id, 'class' => $class)) ?>">
+          delete
+      </a>
+    <?php endif; ?>
     <?php echo editable_content_tag($inner_tag, $obj, $fields, $inner_options) ?>
   <?php endforeach; ?>
 </<?php echo $outer_tag ?>>
@@ -12,22 +19,24 @@
   <?php echo editable_content_tag($inner_tag, $new, $fields, $inner_options) ?>
 <?php endif; ?>
 
-<?php if(should_show_io_editor() && $sortable): ?>
+<?php if(should_show_io_editor()): ?>
   <script type="text/javascript">
-    $(function() {
-      $(".editable_content_list").sortable({
-        items: '<?php echo $inner_tag ?>',
-        update: function() {
-          var data = $(this).sortable('serialize');
-          $.post(
-            "<?php echo url_for('editable_content_service_list_sort') ?>?"+data,
-            {
-              'class': '<?php echo $class ?>'
-            }
-          );
-        }
+    <?php if($sortable): ?>
+      $(function() {
+        $(".editable_content_list").sortable({
+          items: '<?php echo $inner_tag ?>',
+          update: function() {
+            var data = $(this).sortable('serialize');
+            $.post(
+              "<?php echo url_for('editable_content_service_list_sort') ?>?"+data,
+              {
+                'class': '<?php echo $class ?>'
+              }
+            );
+          }
+        });
+        $(this).disableSelection();
       });
-      $(this).disableSelection();
-    });
+    <?php endif; ?>
   </script>
 <?php endif; ?>

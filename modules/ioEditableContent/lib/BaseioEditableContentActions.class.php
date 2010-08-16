@@ -152,6 +152,21 @@ class BaseioEditableContentActions extends sfActions
     
     return sfView::NONE;
   }
+  
+  public function executeDelete(sfWebRequest $request)
+  {
+    $id = $request->getParameter('id');
+    $class = $request->getParameter('class');
+    
+    $obj = Doctrine_Core::getTable($class)->find($id);
+    
+    if($obj)
+    {
+      $obj->delete();
+    }
+    
+    return sfView::NONE;
+  }
 
   /**
    * Returns the form object based on the request parameters

@@ -1,3 +1,15 @@
+$(document).ready(function() {
+  $('.editable_content_list_delete').click(function() {
+    if(confirm('Delete?')){
+      $.post($(this).attr('href'));
+      $(this).parent().find('#'+$(this).attr('rel')).remove();
+      $(this).remove();
+    }
+  
+    return false;
+  });
+});
+
 (function($) {
 
 $.widget('ui.ioEditableContent', {

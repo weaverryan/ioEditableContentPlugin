@@ -31,3 +31,10 @@ editable_content_service_list_sort:
   param:
     module: ioEditableContent
     action: sort
+    
+# post here to delete an obj
+editable_content_service_list_delete:
+  url:   /service/content/list/:id/delete
+  param:
+    module: ioEditableContent
+    action: delete

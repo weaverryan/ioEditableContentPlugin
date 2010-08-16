@@ -141,6 +141,7 @@ class ioEditableContentService
     // parse the options out of the options array
     $sortable = _get_option($options, 'sortable', false);
     $with_new = _get_option($options, 'with_new', false);
+    $with_delete = _get_option($options, 'with_delete', false);
     
     // extract attributes from options
     $attributes = $options;
@@ -157,6 +158,7 @@ class ioEditableContentService
         'attributes'       => $attributes,
         'sortable'         => $sortable,
         'with_new'         => $with_new,
+        'with_delete'      => $with_delete,
         'new'              => $new,
         'inner_tag'        => $inner_tag,
         'fields'           => $fields,
