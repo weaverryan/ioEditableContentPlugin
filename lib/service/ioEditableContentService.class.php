@@ -148,7 +148,6 @@ class ioEditableContentService
     
     // new object
     $new = new $class();
-    $new->title = "Add one";
     
     return include_partial(
       'ioEditableContent/list',
