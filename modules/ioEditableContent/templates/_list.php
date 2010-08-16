@@ -1,7 +1,9 @@
 <?php $inner_options = ($inner_options instanceof sfOutputEscaper) ? $inner_options->getRawValue() : $inner_options ?>
 <?php $fields = ($fields instanceof sfOutputEscaper) ? $fields->getRawValue() : $fields ?>
 
-<<?php echo $outer_tag ?> class="editable_content_list">
+<?php if (should_show_io_editor()): ?>
+  <<?php echo $outer_tag ?> class="editable_content_list">
+<?php endif; ?>
   <?php foreach ($collection as $obj): ?>
     <?php $inner_options['id'] = 'item_'.$obj->id ?>
     <?php if(should_show_io_editor() && $with_delete): ?>
@@ -13,7 +15,9 @@
     <?php endif; ?>
     <?php echo editable_content_tag($inner_tag, $obj, $fields, $inner_options) ?>
   <?php endforeach; ?>
-</<?php echo $outer_tag ?>>
+<?php if (should_show_io_editor()): ?>
+  </<?php echo $outer_tag ?>>
+<?php endif; ?>
 
 <?php if (should_show_io_editor() && $with_new): ?>
   <?php echo editable_content_tag($inner_tag, $new, $fields, $inner_options) ?>
