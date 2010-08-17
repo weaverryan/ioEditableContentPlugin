@@ -160,7 +160,7 @@ class BaseioEditableContentActions extends sfActions
     
     $obj = Doctrine_Core::getTable($class)->find($id);
     
-    if($obj)
+    if ($obj)
     {
       $obj->delete();
     }
