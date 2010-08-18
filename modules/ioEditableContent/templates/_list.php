@@ -1,8 +1,9 @@
 <?php $inner_options = ($inner_options instanceof sfOutputEscaper) ? $inner_options->getRawValue() : $inner_options ?>
 <?php $fields = ($fields instanceof sfOutputEscaper) ? $fields->getRawValue() : $fields ?>
-
+<?php $new_options = $inner_options ?>
 
 <<?php echo $outer_tag ?> <?php if (should_show_io_editor()): ?>class="editable_content_list"<?php endif; ?>>
+  <?php $inner_options['class'] = $inner_options['class'].' editable_content_list_item' ?>
   <?php foreach ($collection as $obj): ?>
     <?php $inner_options['id'] = 'item_'.$obj->id ?>
     <?php if(should_show_io_editor() && $with_delete): ?>
@@ -16,7 +17,7 @@
   <?php endforeach; ?>
 
   <?php if (should_show_io_editor() && $with_new): ?>
-    <?php echo editable_content_tag($inner_tag, $new, $fields, $inner_options) ?>
+    <?php echo editable_content_tag($inner_tag, $new, $fields, $new_options) ?>
   <?php endif; ?>
 </<?php echo $outer_tag ?>>
 
@@ -25,7 +26,7 @@
     <?php if($sortable): ?>
       $(function() {
         $(".editable_content_list").sortable({
-          items: '<?php echo $inner_tag ?>',
+          items: '<?php echo $inner_tag ?>.editable_content_list_item',
           update: function() {
             var data = $(this).sortable('serialize');
             $.post(
