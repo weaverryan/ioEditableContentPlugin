@@ -167,6 +167,28 @@ class BaseioEditableContentActions extends sfActions
     
     return sfView::NONE;
   }
+  
+  /**
+   * action to take any given object and nullify a column on that object
+   */
+  public function executeSetColumn(sfWebRequest $request)
+  {
+    $column = $request->getParameter('column');
+    $id = $request->getParameter('id');
+    $model = $request->getParameter('model');
+    $value = $request->getParameter('value');
+    
+    $obj = Doctrine_Core::getTable($model)->find($id);
+    
+    if ($obj)
+    {
+      $obj->$column = $value;
+      $obj->save();
+    }
+    
+    return sfView::NONE;
+  }
+
 
   /**
    * Returns the form object based on the request parameters
