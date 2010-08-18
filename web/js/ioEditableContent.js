@@ -162,7 +162,7 @@ $.widget('ui.ioEditableContent', {
     self.element.removeClass('editor_opened');
 
    // Deactivate any links, clicking cancel will bring up the editor
-    $('a', self.element).click(function() {
+    $('a:not(.editable_content_link)', self.element).click(function() {
       if (confirm('Follow link? (ok to follow, cancel to edit this area)')) {
         window.location($(this).attr('href'));
       }
