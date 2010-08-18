@@ -139,7 +139,7 @@ class ioEditableContentService
     $class = $collection->getTable()->getClassNameToReturn();
     
     // parse the options out of the options array
-    $sortable = _get_option($options, 'sortable', false);
+    $sortable = (_get_option($options, 'sortable', false)) ? 'sortable_'.substr(md5(microtime()),0,5) : 0;
     $with_new = _get_option($options, 'with_new', false);
     $with_delete = _get_option($options, 'with_delete', false);
     
