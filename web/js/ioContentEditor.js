@@ -12,6 +12,7 @@ $.widget('ui.ioContentEditor', {
   
   initialize: function() {
     var self = this;
+    var form = this.getForm();
     
     // register the ajax form submit event
     this._ajaxForm();
@@ -20,6 +21,14 @@ $.widget('ui.ioContentEditor', {
     $('input.cancel', this.getForm()).click(function() {
       // trigger a close event
 
+      self.element.trigger('close');
+      return false;
+    });
+    
+    // hook up the done button
+    $('input.done', this.getForm()).click(function() {
+      // trigger a save + close event
+      form.submit();
       self.element.trigger('close');
       return false;
     });

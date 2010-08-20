@@ -21,4 +21,5 @@
 
   <input type="button" class="cancel" value="cancel" />
   <input type="submit" value="save" />
+  <input type="button" class="done" value="done" />
 </form>
