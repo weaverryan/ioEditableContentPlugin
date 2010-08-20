@@ -3,7 +3,7 @@
 <?php $new_options = $inner_options ?>
 
 <<?php echo $outer_tag ?> <?php if (should_show_io_editor() && $sortable): ?>id="<?php echo $sortable ?>"<?php endif; ?>>
-  <?php $inner_options['class'] = $inner_options['class'].' editable_content_list_item' ?>
+  <?php $inner_options['class'] = (isset($inner_options['class'])) ? $inner_options['class'].' editable_content_list_item' : 'editable_content_list_item'; ?>
   <?php foreach ($collection as $obj): ?>
     <?php $inner_options['id'] = 'item_'.$obj->id ?>
     <?php if(should_show_io_editor() && $with_delete): ?>
