@@ -20,7 +20,6 @@
 ?>
 
 <<?php echo $outer_tag ?><?php echo _tag_options($attributes) ?>>
-  <?php $inner_attributes['class'] = (isset($inner_attributes['class'])) ? $inner_attributes['class'].' editable_content_list_item' : 'editable_content_list_item'; ?>
   <?php foreach ($collection as $obj): ?>
     <?php $inner_attributes['id'] = 'item_'.$obj->id ?>
     <?php if(should_show_io_editor() && $with_delete): ?>
@@ -43,7 +42,7 @@
     <?php if($sortable): ?>
       $(function() {
         $("#<?php echo $sortable ?>").sortable({
-          items: '.editable_content_list_item',
+          items: '.<?php echo get_editable_content_service()->getOption('editable_class_name', 'io_editable_content') ?>',
           update: function() {
             var data = $(this).sortable('serialize');
             $.post(
