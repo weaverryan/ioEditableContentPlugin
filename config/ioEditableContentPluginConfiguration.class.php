@@ -125,6 +125,7 @@ class ioEditableContentPluginConfiguration extends sfPluginConfiguration
     }
 
     // The admin javascript file is handled by symfony
+    $response->addJavascript(sprintf('%s/js/ioEditableContentList.js', $pluginWebRoot), 'last');
     $response->addJavascript(sprintf('%s/js/ioEditableContent.js', $pluginWebRoot), 'last');
     $response->addJavascript(sprintf('%s/js/ioContentEditor.js', $pluginWebRoot), 'last');
     $response->addJavascript($context->getController()->genUrl('@editable_content_admin_js'), 'last');

@@ -14,11 +14,11 @@ $(document).ready(function(){
 
   // initialize each editable content list
   $('.<?php echo $editableListClassName ?>').each(function() {
+    var options = $(this).metadata();
+    options.form_url = formServiceUrl;
+    options.show_url = showServiceUrl;
+    options.new_ele = $(this).find('.io_new_tag').eq(0);
 
-    $(this).ioEditableContentList({
-      form_url: formServiceUrl,
-      show_url: showServiceUrl
-    });
-
+    $(this).ioEditableContentList(options);
   });
 });

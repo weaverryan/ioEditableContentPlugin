@@ -145,19 +145,21 @@ class ioEditableContentService
     
     // extract attributes from options
     $attributes = $options;
-    $listClassName = $this->getOption('editable_list_class_name', 'io_editable_content_list');
+
+    // start decking out the classes
+    $classes = isset($attributes['class']) ? explode(' ', $attributes['class']) : array();
 
     if ($this->shouldShowEditor())
     {
-      if (isset($attributes['class']))
-      {
-        $attributes['class'] = $attributes['class'] .' '.$listClassName;
-      }
-      else
-      {
-        $attributes['class'] = $listClassName;
-      }
+      $metadataOptions = array(
+        'with_new' => (integer) $with_new,
+      );
+
+      $classes[] = json_encode($metadataOptions);
+      $classes[] = $this->getOption('editable_list_class_name', 'io_editable_content_list');
     }
+
+    $attributes['class'] = implode(' ', $classes);
     
     // new object
     $new = new $class();
