@@ -169,9 +169,9 @@ class BaseioEditableContentActions extends sfActions
     $model = $request->getParameter('model');
     $pk = $request->getParameter('pk');
 
-    $this->forward404Unless($model && $pk);
+    $this->forward404Unless($model && $pk, 'No model or pk parameter passed');
     $object = Doctrine_Core::getTable($model)->find($pk);
-    $this->forward404Unless($object);
+    $this->forward404Unless($object, sprintf('No %s with pk %s found', $model, $pk));
 
     $object->delete();
     
