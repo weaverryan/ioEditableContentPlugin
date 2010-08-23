@@ -9,6 +9,7 @@
  *   * delete_url The base url for deleting an element
  *   * new_ele   A jQuery element that represents a "blank" entry for
  *               on of the entries in this list (used for create).
+ *   * child_class The class for the children elements
  *
  * Optional options
  *   * with_new    Whether to allow the addition of new element [default=false]
@@ -40,6 +41,7 @@ $.widget('ui.ioEditableContentList', {
     if (self.option('with_new'))
     {
       var add_new = self._getClonedBlankItem();
+      add_new.addClass('ignore_sortable');
       add_new.html('<a class="add_new" href="#">'+self.option('add_new_label')+'</a>');
       add_new.bind('click', function() {
         self.addNewTag();
@@ -49,6 +51,30 @@ $.widget('ui.ioEditableContentList', {
 
       self.element.append(add_new);
       self._setOption('add_new_element', add_new);
+    }
+
+    if (self.option('sortable'))
+    {
+      self.element.sortable({
+        items:  '.'+self.option('child_class')+':not(.ignore_sortable)',
+        update: function() {
+
+          var items = self.element.children();
+          var data = [];
+
+          items.each(function() {
+            data.push($(this).metadata().pk);
+          });
+
+          $.post(
+            self.option('sortable_url'),
+            {
+              'items': data,
+              'model': self.option('new_ele').metadata().model
+            }
+          );
+        }
+      });
     }
   },
 

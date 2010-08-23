@@ -135,23 +135,31 @@ class BaseioEditableContentActions extends sfActions
   public function executeSort(sfWebRequest $request)
   {
     // give me the class of the objects being sorted
-    $class = $request->getParameter('class');
+    $model = $request->getParameter('model');
+    $items = $request->getParameter('items');
+    $this->forward404Unless($model && $items);
     
     // give me an array where object id => position
-    $sort = array_flip($request->getParameter('item'));
-    
-    // give me a comma delimited id string
-    $ids = sprintf('(%s)', implode(',', array_keys($sort)));
+    $items = array_flip($items);
+
+    // remove any invalid items (with a null id)
+    unset($items['null']);
     
     // retrieve the objects by the ids submitted
-    $objects = Doctrine_Query::create()->from($class.' c')->where('c.id IN '.$ids)->execute();
+    $objects = Doctrine_Query::create()
+      ->from($model.' c')
+      ->whereIn('c.id', array_keys($items))
+      ->execute();
     
     // set the positions and save the objects
     foreach($objects as $obj)
     {
-      $obj->position = $sort[$obj->id];
+      $obj->position = $items[$obj->id];
       $obj->save();
     }
+
+    $ret = array('success' => true);
+    $this->renderText(json_encode($ret));
     
     return sfView::NONE;
   }

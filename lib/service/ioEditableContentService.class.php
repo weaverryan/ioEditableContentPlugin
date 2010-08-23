@@ -152,10 +152,6 @@ class ioEditableContentService
       }
     }
 
-    // @TODO Refactor the sortable
-    // parse the options out of the options array
-    $sortable = (_get_option($options, 'sortable', false)) ? 'sortable_'.substr(md5(microtime()),0,5) : 0;
-
     // pass the special with_delete option to the inner attributes
     $inner_attributes['with_delete'] = _get_option($options, 'with_delete');
 
@@ -182,9 +178,6 @@ class ioEditableContentService
     $content = '';
     foreach ($collection as $object)
     {
-      // temporary hack for sortable
-      $inner_attributes['id'] = 'item_'.$object->id;
-
       $content .= $this->getEditableContentTag($inner_tag, $object, $fields, $inner_attributes);
     }
 
@@ -204,23 +197,10 @@ class ioEditableContentService
       $content .= $this->getEditableContentTag($inner_tag, $new, $fields, $empty_attributes);
     }
 
-    // sortable hack
-    if (should_show_io_editor() && $sortable)
-    {
-      $attributes['id'] = $sortable;
-    }
-
     // actually render the outer tag
     $content = content_tag($outer_tag, $content, $attributes);
 
-    // this will eventually all live inside here
-    return $content . get_partial(
-      'ioEditableContent/list',
-      array(
-        'sortable'         => $sortable,
-        'class'            => $class,
-      )
-    );
+    return $content;
   }
   
   /**
