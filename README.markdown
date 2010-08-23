@@ -55,8 +55,8 @@ Create a symbolic link to the web directory of the plugin by running:
 
     ./symfony plugin:publish-assets
 
-Usage
------
+Usage: Editable content
+-----------------------
 
 This plugin allows for the rendering of data from a model in such a way
 that inline editing is automatic. The simplest version of this includes
@@ -180,6 +180,52 @@ Finally, another option, `mode`, was also specified in the options argument
 of `editable_content_tag`. This option, which can take the value `inline`
 or `fancybox` whether to render the form inline where the actual content
 resides or in a popup fancybox modal window.
+
+Usage: Editable lists
+---------------------
+
+So far, we've talked only about editing a set of fields on one object. Sometimes,
+however, you may need to output a list of objects, where each object is
+editable. For example, suppose we have an "author" index page that lists
+all the authors for our blog:
+
+    <div class="authors">
+      <?php foreach ($authors as $author): ?>
+        <?php echo editable_content_tag('h2', $author, 'name', array('class' => 'header') ?>
+      <?php endforeach; ?>
+    </div>
+
+The above code will work perfectly. However, let's add the following requirements
+to this blog list page:
+
+ * The admin should be able to add new authors inline
+ * The admin should be able to delete existing authors inline
+ * The admin should be able to reorder the authors inline
+
+To do this, we introduce a new helper function: `editable_content_list()`.
+This function takes a collection of objects and renders each using
+`editable_content_tag()`. It also adds the above functionality (optionally)
+along the way:
+
+    <?php echo editable_content_list(
+      'div',
+      $authors,
+      array('with_new' => true, 'class' => 'authors'),
+      'h2',
+      'name',
+      array('class' => 'header'),
+    ) ?>
+
+The first three options should feel very similar to `editable_content_tag`
+and are:
+
+  * A tag to surround all of the entries (e.g. `div`)
+  * The collection of objects to render
+  * An options array - a mixture of options and attributes for the outer tag
+
+The second three options are simply the first, third and fourth option
+from `editable_content_tag`. These specify how each individual entry
+of the collection should be rendered.
 
 Configuration
 -------------

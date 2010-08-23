@@ -31,3 +31,19 @@ editable_content_service_list_sort:
   param:
     module: ioEditableContent
     action: sort
+    
+# post here to delete an obj
+editable_content_service_delete:
+  url:   /service/content/delete
+  param:
+    module: ioEditableContent
+    action: delete
+
+editable_content_service_set_column:
+  class: sfRequestRoute
+  url:  /service/content/nullify
+  param:
+    module: ioEditableContent
+    action: setColumn
+  requirements:
+    sf_method:  [put, post]

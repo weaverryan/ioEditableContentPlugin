@@ -27,3 +27,31 @@
   width: 95%;
   font:bold 0.95em arial, sans-serif;
 }
+
+/* The placeholder "new" element output with editable lists */
+.<?php echo $editableListClassName ?> .io_new_tag {
+  display: none;
+}
+
+/* The delete link - hidden unless hovering over the element */
+.editable_delete_link {
+  background: url('<?php echo image_path('/ioEditableContentPlugin/images/delete.png') ?>') top left no-repeat;
+  width: 16px;
+  height: 16px;
+  position: absolute;
+  display: none;
+  margin-left: -20px;
+  
+}
+.<?php echo $editableClassName ?>:hover .editable_delete_link {
+  display: block;
+}
+
+.<?php echo $editableClassName ?> a.add_new {
+  font-style: italic;
+  display: block;
+  height: 16px;
+  background: url('<?php echo image_path('/ioEditableContentPlugin/images/add.png') ?>') top left no-repeat;
+  font-size: .8em;
+  padding-left: 20px;
+}

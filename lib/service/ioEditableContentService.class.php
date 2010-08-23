@@ -31,6 +31,13 @@ class ioEditableContentService
     'form',
     'form_partial',
     'mode',
+    'with_delete',
+  );
+
+  protected $_validListOptions = array(
+    'with_new',
+    'with_delete',
+    'sortable',
   );
 
   /**
@@ -133,37 +140,70 @@ class ioEditableContentService
    *
    * @return string
    */
-  public function getEditableContentList($outer_tag, $collection, $options, $inner_tag, $fields, $inner_options)
+  public function getEditableContentList($outer_tag, $collection, $attributes, $inner_tag, $fields, $inner_attributes)
   {
-    // the class of the objects in the collection
+    // extract the option values, remove from the attributes array
+    $options = array();
+    foreach ($this->_validListOptions as $validOption)
+    {
+      if (isset($attributes[$validOption]))
+      {
+        $options[$validOption] = _get_option($attributes, $validOption);
+      }
+    }
+
+    // pass the special with_delete option to the inner attributes
+    $inner_attributes['with_delete'] = _get_option($options, 'with_delete');
+
+    // start decking out the classes on the outer tag
+    $classes = isset($attributes['class']) ? explode(' ', $attributes['class']) : array();
+
+    if ($this->shouldShowEditor())
+    {
+      $classes[] = json_encode($options);
+      $classes[] = $this->getOption('editable_list_class_name', 'io_editable_content_list');
+    }
+
+    if (count($classes))
+    {
+      $attributes['class'] = implode(' ', $classes);
+    }
+    
+    // create a new object of the given model
     $class = $collection->getTable()->getClassNameToReturn();
-    
-    // parse the options out of the options array
-    $sortable = _get_option($options, 'sortable', false);
-    $with_new = _get_option($options, 'with_new', false);
-    
-    // extract attributes from options
-    $attributes = $options;
-    
-    // new object
     $new = new $class();
-    $new->title = "Add one";
-    
-    return include_partial(
-      'ioEditableContent/list',
-      array(
-        'outer_tag'        => $outer_tag,
-        'collection'       => $collection,
-        'attributes'       => $attributes,
-        'sortable'         => $sortable,
-        'with_new'         => $with_new,
-        'new'              => $new,
-        'inner_tag'        => $inner_tag,
-        'fields'           => $fields,
-        'inner_options'    => $inner_options,
-        'class'            => $class,
-      )
-    );
+
+    /*
+     * Begin rendering the content - this is a refactor of the previous
+     * _list.php partial
+     */
+
+    $content = '';
+    foreach ($collection as $object)
+    {
+      $content .= $this->getEditableContentTag($inner_tag, $object, $fields, $inner_attributes);
+    }
+
+    // add the empty/new item so the js has something to build from
+    if ($this->shouldShowEditor())
+    {
+      $empty_attributes = $inner_attributes;
+      if (isset($empty_attributes['class']))
+      {
+        $empty_attributes['class'] = $empty_attributes['class'] .' io_new_tag';
+      }
+      else
+      {
+        $empty_attributes['class'] = 'io_new_tag';
+      }
+
+      $content .= $this->getEditableContentTag($inner_tag, $new, $fields, $empty_attributes);
+    }
+
+    // actually render the outer tag
+    $content = content_tag($outer_tag, $content, $attributes);
+
+    return $content;
   }
   
   /**

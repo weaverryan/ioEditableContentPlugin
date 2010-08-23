@@ -14,6 +14,9 @@ class BaseioEditableContentActions extends sfActions
     $this->pluginWebRoot = sfConfig::get('app_editable_content_assets_web_root', '/ioEditableContentPlugin');
     $this->editableClassName = $this->_getEditableContentService()
       ->getOption('editable_class_name', 'io_editable_content');
+
+    $this->editableListClassName = $this->_getEditableContentService()
+      ->getOption('editable_list_class_name', 'io_editable_content_list');
   }
 
   // the dynamic css file
@@ -132,26 +135,73 @@ class BaseioEditableContentActions extends sfActions
   public function executeSort(sfWebRequest $request)
   {
     // give me the class of the objects being sorted
-    $class = $request->getParameter('class');
+    $model = $request->getParameter('model');
+    $items = $request->getParameter('items');
+    $this->forward404Unless($model && $items);
     
     // give me an array where object id => position
-    $sort = array_flip($request->getParameter('item'));
-    
-    // give me a comma delimited id string
-    $ids = sprintf('(%s)', implode(',', array_keys($sort)));
+    $items = array_flip($items);
+
+    // remove any invalid items (with a null id)
+    unset($items['null']);
     
     // retrieve the objects by the ids submitted
-    $objects = Doctrine_Query::create()->from($class.' c')->where('c.id IN '.$ids)->execute();
+    $objects = Doctrine_Query::create()
+      ->from($model.' c')
+      ->whereIn('c.id', array_keys($items))
+      ->execute();
     
     // set the positions and save the objects
     foreach($objects as $obj)
     {
-      $obj->position = $sort[$obj->id];
+      $obj->position = $items[$obj->id];
+      $obj->save();
+    }
+
+    $ret = array('success' => true);
+    $this->renderText(json_encode($ret));
+    
+    return sfView::NONE;
+  }
+  
+  public function executeDelete(sfWebRequest $request)
+  {
+    $model = $request->getParameter('model');
+    $pk = $request->getParameter('pk');
+
+    $this->forward404Unless($model && $pk);
+    $object = Doctrine_Core::getTable($model)->find($pk);
+    $this->forward404Unless($object);
+
+    $object->delete();
+    
+    $ret = array('success' => true);
+    $this->renderText(json_encode($ret));
+
+    return sfView::NONE;
+  }
+  
+  /**
+   * action to take any given object and nullify a column on that object
+   */
+  public function executeSetColumn(sfWebRequest $request)
+  {
+    $column = $request->getParameter('column');
+    $id = $request->getParameter('id');
+    $model = $request->getParameter('model');
+    $value = $request->getParameter('value');
+    
+    $obj = Doctrine_Core::getTable($model)->find($id);
+    
+    if ($obj)
+    {
+      $obj->$column = $value;
       $obj->save();
     }
     
     return sfView::NONE;
   }
+
 
   /**
    * Returns the form object based on the request parameters
