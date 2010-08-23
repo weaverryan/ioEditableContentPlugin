@@ -134,6 +134,7 @@ class BaseioEditableContentActions extends sfActions
    */
   public function executeSort(sfWebRequest $request)
   {
+    $this->_checkCredentials();
     // give me the class of the objects being sorted
     $model = $request->getParameter('model');
     $items = $request->getParameter('items');
@@ -166,6 +167,7 @@ class BaseioEditableContentActions extends sfActions
   
   public function executeDelete(sfWebRequest $request)
   {
+    $this->_checkCredentials();
     $model = $request->getParameter('model');
     $pk = $request->getParameter('pk');
 
@@ -186,6 +188,7 @@ class BaseioEditableContentActions extends sfActions
    */
   public function executeSetColumn(sfWebRequest $request)
   {
+    $this->_checkCredentials();
     $column = $request->getParameter('column');
     $id = $request->getParameter('id');
     $model = $request->getParameter('model');
