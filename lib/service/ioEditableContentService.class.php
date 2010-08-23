@@ -154,6 +154,8 @@ class ioEditableContentService
     // @TODO Refactor the sortable
     // parse the options out of the options array
     $sortable = (_get_option($options, 'sortable', false)) ? 'sortable_'.substr(md5(microtime()),0,5) : 0;
+    $with_new = isset($options['with_new']) && $options['with_new'];
+    $with_delete = isset($options['with_delete']) && $options['with_delete'];
 
     // start decking out the classes on the outer tag
     $classes = isset($attributes['class']) ? explode(' ', $attributes['class']) : array();
@@ -174,21 +176,56 @@ class ioEditableContentService
      * Begin rendering the content - this is a refactor of the previous
      * _list.php partial
      */
-    
-    
-    return include_partial(
+
+    $content = '';
+    foreach ($collection as $object)
+    {
+      // temporary hack for sortable
+      $inner_attributes['id'] = 'item_'.$object->id;
+
+      // temporary delete hack
+      if ($this->shouldShowEditor() && $with_delete)
+      {
+        $content .= '<a class="editable_content_list_delete"
+          rel="'.$inner_attributes['id'].'"
+          href="'.url_for('editable_content_service_list_delete', array('id' => $object->id, 'class' => $class)).'">
+          delete
+        </a>';
+      }
+
+      $content .= $this->getEditableContentTag($inner_tag, $object, $fields, $inner_attributes);
+    }
+
+    // add the empty/new item so the js has something to build from
+    if ($this->shouldShowEditor())
+    {
+      $empty_attributes = $inner_attributes;
+      if (isset($empty_attributes['class']))
+      {
+        $empty_attributes['class'] = $empty_attributes['class'] .' io_new_tag';
+      }
+      else
+      {
+        $empty_attributes['class'] = 'io_new_tag';
+      }
+
+      $content .= $this->getEditableContentTag($inner_tag, $new, $fields, $empty_attributes);
+    }
+
+    // sortable hack
+    if (should_show_io_editor() && $sortable)
+    {
+      $attributes['id'] = $sortable;
+    }
+
+    // actually render the outer tag
+    $content = content_tag($outer_tag, $content, $attributes);
+
+    // this will eventually all live inside here
+    return $content . get_partial(
       'ioEditableContent/list',
       array(
-        'outer_tag'        => $outer_tag,
-        'collection'       => $collection,
-        'attributes'       => $attributes,
         'sortable'         => $sortable,
-        'with_new'         => isset($options['with_new']) && $options['with_new'],
-        'with_delete'      => isset($options['with_delete']) && $options['with_delete'],
-        'new'              => $new,
-        'inner_tag'        => $inner_tag,
-        'fields'           => $fields,
-        'inner_attributes' => $inner_attributes,
         'class'            => $class,
       )
     );
