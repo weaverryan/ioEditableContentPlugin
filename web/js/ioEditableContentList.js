@@ -34,7 +34,6 @@ $.widget('ui.ioEditableContentList', {
   initialize: function() {
     var self = this;
 
-    console.log(self.option('with_new'));
     if (self.option('with_new'))
     {
       var add_new = self._getClonedBlankItem();
