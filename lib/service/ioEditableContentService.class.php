@@ -164,7 +164,10 @@ class ioEditableContentService
       $classes[] = $this->getOption('editable_list_class_name', 'io_editable_content_list');
     }
 
-    $attributes['class'] = implode(' ', $classes);
+    if (count($classes))
+    {
+      $attributes['class'] = implode(' ', $classes);
+    }
     
     // create a new object of the given model
     $class = $collection->getTable()->getClassNameToReturn();
