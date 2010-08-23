@@ -109,6 +109,30 @@ $.widget('ui.ioEditableContent', {
     );
   },
   
+  deleteItem: function() {
+    var self = this;
+    
+    if(confirm('Delete?')){
+      $.ajax({
+        url: self._getDeleteUrl(),
+        success: function(data, textStatus, XMLHttpRequest)
+        {
+          // fade out then remove the element
+          self.element.fadeOut(500, function(){
+            self.destroy();
+            $(this).remove();
+          });
+        },
+        error: function(XMLHttpRequest, textStatus, errorThrown)
+        {
+          alert('Error deleting the object: '+XMLHttpRequest.status)
+        }
+      });
+    }
+    return false;
+  },
+
+  
   initialize: function() {
     var self = this;
     
@@ -171,26 +195,8 @@ $.widget('ui.ioEditableContent', {
     {
       var delete_link = $('<a href="#" class="editable_content_link editable_delete_link" title="delete"></a>');
 
-      delete_link.bind('click', function() {
-        if(confirm('Delete?')){
-          $.ajax({
-            url: self._getDeleteUrl(),
-            success: function(data, textStatus, XMLHttpRequest)
-            {
-              // fade out then remove the element
-              self.element.fadeOut(500, function(){
-                self.destroy();
-                $(this).remove();
-              });
-            },
-            error: function(XMLHttpRequest, textStatus, errorThrown)
-            {
-              alert('Error deleting the object: '+XMLHttpRequest.status)
-            }
-          });
-        }
-
-        return false;
+      delete_link.bind('click', function () {
+        self.deleteItem()
       });
 
       self.element.prepend(delete_link);
