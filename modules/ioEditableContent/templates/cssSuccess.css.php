@@ -32,3 +32,17 @@
 .<?php echo $editableListClassName ?> .io_new_tag {
   display: none;
 }
+
+/* The delete link - hidden unless hovering over the element */
+.editable_delete_link {
+  background: url('<?php echo image_path('/ioEditableContentPlugin/images/delete.png') ?>') top left no-repeat;
+  width: 16px;
+  height: 16px;
+  position: absolute;
+  display: none;
+  margin-left: -20px;
+  
+}
+.<?php echo $editableClassName ?>:hover .editable_delete_link {
+  display: block;
+}

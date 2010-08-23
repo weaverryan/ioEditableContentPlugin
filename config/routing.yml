@@ -33,8 +33,8 @@ editable_content_service_list_sort:
     action: sort
     
 # post here to delete an obj
-editable_content_service_list_delete:
-  url:   /service/content/list/delete
+editable_content_service_delete:
+  url:   /service/content/delete
   param:
     module: ioEditableContent
     action: delete

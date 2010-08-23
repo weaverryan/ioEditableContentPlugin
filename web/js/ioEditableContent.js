@@ -1,21 +1,10 @@
-$(document).ready(function() {
-  $('.editable_content_list_delete').click(function() {
-    if(confirm('Delete?')){
-      $.post($(this).attr('href'));
-      $(this).parent().find('#'+$(this).attr('rel')).remove();
-      $(this).remove();
-    }
-  
-    return false;
-  });
-});
-
 /**
  * When applied to an element, this makes that element inline-editable.
  *
  * This requires a number of options to be passed in:
  *   * form_url The base url to render the form
  *   * show_url The base url for rendering the element
+ *   * delete_url The base url for deleting the element
  *   * mode     inline|fancybox (defaults to fancybox)
  *   * model    The model being edited (e.g. "Blog")
  *   * pk       The primary key of the object being modified
@@ -30,7 +19,8 @@ $(document).ready(function() {
 $.widget('ui.ioEditableContent', {
   
   options: {
-    mode: 'fancybox'
+    mode:         'fancybox',
+    with_delete:  false
   },
   
   _create: function() {
@@ -176,6 +166,36 @@ $.widget('ui.ioEditableContent', {
     // remove the class that says the editor is opened
     self.element.removeClass('editor_opened');
 
+    // add the delete button if with_delete enabled
+    if (self.option('with_delete'))
+    {
+      var delete_link = $('<a href="#" class="editable_content_link editable_delete_link" title="delete"></a>');
+
+      delete_link.bind('click', function() {
+        if(confirm('Delete?')){
+          $.ajax({
+            url: self._getDeleteUrl(),
+            success: function(data, textStatus, XMLHttpRequest)
+            {
+              // fade out then remove the element
+              self.element.fadeOut(500, function(){
+                self.destroy();
+                $(this).remove();
+              });
+            },
+            error: function(XMLHttpRequest, textStatus, errorThrown)
+            {
+              alert('Error deleting the object: '+XMLHttpRequest.status)
+            }
+          });
+        }
+
+        return false;
+      });
+
+      self.element.prepend(delete_link);
+    }
+
    // Deactivate any links, clicking cancel will bring up the editor
     $('a:not(.editable_content_link)', self.element).click(function() {
       if (confirm('Follow link? (ok to follow, cancel to edit this area)')) {
@@ -208,6 +228,14 @@ $.widget('ui.ioEditableContent', {
 
   _getShowUrl: function(){
     return this.option('show_url')+'?'+this._getUrlQueryString();
+  },
+
+  _getDeleteUrl: function() {
+    var params = {};
+    params.model = this.option('model');
+    params.pk = this.option('pk');
+
+    return this.option('delete_url')+'?'+jQuery.param(params);
   },
 
   _getUrlQueryString: function(){

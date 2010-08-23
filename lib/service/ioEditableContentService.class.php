@@ -31,6 +31,7 @@ class ioEditableContentService
     'form',
     'form_partial',
     'mode',
+    'with_delete',
   );
 
   protected $_validListOptions = array(
@@ -154,8 +155,9 @@ class ioEditableContentService
     // @TODO Refactor the sortable
     // parse the options out of the options array
     $sortable = (_get_option($options, 'sortable', false)) ? 'sortable_'.substr(md5(microtime()),0,5) : 0;
-    $with_new = isset($options['with_new']) && $options['with_new'];
-    $with_delete = isset($options['with_delete']) && $options['with_delete'];
+
+    // pass the special with_delete option to the inner attributes
+    $inner_attributes['with_delete'] = _get_option($options, 'with_delete');
 
     // start decking out the classes on the outer tag
     $classes = isset($attributes['class']) ? explode(' ', $attributes['class']) : array();
@@ -182,16 +184,6 @@ class ioEditableContentService
     {
       // temporary hack for sortable
       $inner_attributes['id'] = 'item_'.$object->id;
-
-      // temporary delete hack
-      if ($this->shouldShowEditor() && $with_delete)
-      {
-        $content .= '<a class="editable_content_list_delete"
-          rel="'.$inner_attributes['id'].'"
-          href="'.url_for('editable_content_service_list_delete', array('id' => $object->id, 'class' => $class)).'">
-          delete
-        </a>';
-      }
 
       $content .= $this->getEditableContentTag($inner_tag, $object, $fields, $inner_attributes);
     }

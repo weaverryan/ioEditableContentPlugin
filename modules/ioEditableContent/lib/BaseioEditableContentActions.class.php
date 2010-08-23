@@ -158,16 +158,18 @@ class BaseioEditableContentActions extends sfActions
   
   public function executeDelete(sfWebRequest $request)
   {
-    $id = $request->getParameter('id');
-    $class = $request->getParameter('class');
+    $model = $request->getParameter('model');
+    $pk = $request->getParameter('pk');
+
+    $this->forward404Unless($model && $pk);
+    $object = Doctrine_Core::getTable($model)->find($pk);
+    $this->forward404Unless($object);
+
+    $object->delete();
     
-    $obj = Doctrine_Core::getTable($class)->find($id);
-    
-    if ($obj)
-    {
-      $obj->delete();
-    }
-    
+    $ret = array('success' => true);
+    $this->renderText(json_encode($ret));
+
     return sfView::NONE;
   }
   

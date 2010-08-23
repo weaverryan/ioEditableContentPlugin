@@ -1,5 +1,6 @@
 var formServiceUrl = '<?php echo url_for('@editable_content_service_form') ?>';
 var showServiceUrl = '<?php echo url_for('@editable_content_service_show') ?>';
+var deleteServiceUrl = '<?php echo url_for('@editable_content_service_delete') ?>';
 
 $(document).ready(function(){
 
@@ -8,6 +9,7 @@ $(document).ready(function(){
     var options = $(this).metadata();
     options.form_url = formServiceUrl;
     options.show_url = showServiceUrl;
+    options.delete_url = deleteServiceUrl;
 
     $(this).ioEditableContent(options);
   });
@@ -17,6 +19,7 @@ $(document).ready(function(){
     var options = $(this).metadata();
     options.form_url = formServiceUrl;
     options.show_url = showServiceUrl;
+    options.delete_url = deleteServiceUrl;
     options.new_ele = $(this).find('.io_new_tag').eq(0);
 
     $(this).ioEditableContentList(options);
