@@ -40,6 +40,8 @@ $.widget('ui.ioEditableContentList', {
       add_new.html('<a class="add_new" href="#">'+self.option('add_new_label')+'</a>');
       add_new.bind('click', function() {
         self.addNewTag();
+
+        return false;
       });
 
       self.element.append(add_new);
