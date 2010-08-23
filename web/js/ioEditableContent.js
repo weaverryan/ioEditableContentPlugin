@@ -10,6 +10,21 @@ $(document).ready(function() {
   });
 });
 
+/**
+ * When applied to an element, this makes that element inline-editable.
+ *
+ * This requires a number of options to be passed in:
+ *   * form_url The base url to render the form
+ *   * show_url The base url for rendering the element
+ *   * mode     inline|fancybox (defaults to fancybox)
+ *   * model    The model being edited (e.g. "Blog")
+ *   * pk       The primary key of the object being modified
+ *   * fields   Array, the fields on the model being modified
+ *
+ * Due to the many options, this is not usually called directly, but is
+ * instead handled by the jsSuccess.js.php file, which applies this to
+ * elements output using the special editable_content_tag() PHP helper.
+ */
 (function($) {
 
 $.widget('ui.ioEditableContent', {
