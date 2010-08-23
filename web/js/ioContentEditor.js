@@ -27,10 +27,13 @@ $.widget('ui.ioContentEditor', {
     
     // hook up the done button
     // @todo have this handle form validation (don't just close)
-    $('input.done', this.getForm()).click(function() {
+    $('input.done', form).click(function() {
       // trigger a save + close event
+
+      // tell myself to close on successful form submit
+      self._setOption('close_on_form_success', true);
       form.submit();
-      self.element.trigger('close');
+
       return false;
     });
     
@@ -68,6 +71,12 @@ $.widget('ui.ioContentEditor', {
           form.trigger('ajaxResponseSuccess');
           form.trigger('formPostResponse', responseText);
           self.unblock();
+
+          if (self.option('close_on_form_success'))
+          {
+            self._setOption('close_on_form_success', false);
+            self.element.trigger('close');
+          }
         }
       });
       
