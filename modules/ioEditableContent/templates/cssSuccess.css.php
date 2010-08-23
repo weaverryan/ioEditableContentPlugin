@@ -46,3 +46,12 @@
 .<?php echo $editableClassName ?>:hover .editable_delete_link {
   display: block;
 }
+
+.<?php echo $editableClassName ?> a.add_new {
+  font-style: italic;
+  display: block;
+  height: 16px;
+  background: url('<?php echo image_path('/ioEditableContentPlugin/images/add.png') ?>') top left no-repeat;
+  font-size: .8em;
+  padding-left: 20px;
+}
