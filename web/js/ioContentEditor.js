@@ -26,6 +26,7 @@ $.widget('ui.ioContentEditor', {
     });
     
     // hook up the done button
+    // @todo have this handle form validation (don't just close)
     $('input.done', this.getForm()).click(function() {
       // trigger a save + close event
       form.submit();
