@@ -41,10 +41,10 @@
   position: absolute;
   display: none;
   margin-left: -20px;
-  
+
 }
 .<?php echo $editableClassName ?>:hover .editable_delete_link {
-  display: block;
+  display: inline;
 }
 
 .<?php echo $editableClassName ?> a.add_new {
