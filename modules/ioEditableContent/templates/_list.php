@@ -1,6 +1,6 @@
-<?php $inner_options = ($inner_options instanceof sfOutputEscaper) ? $inner_options->getRawValue() : $inner_options ?>
+<?php $inner_attributes = ($inner_attributes instanceof sfOutputEscaper) ? $inner_attributes->getRawValue() : $inner_attributes ?>
 <?php $fields = ($fields instanceof sfOutputEscaper) ? $fields->getRawValue() : $fields ?>
-<?php $new_options = $inner_options ?>
+<?php $new_options = $inner_attributes ?>
 <?php
   if (isset($new_options['class']))
   {
@@ -20,17 +20,17 @@
 ?>
 
 <<?php echo $outer_tag ?><?php echo _tag_options($attributes) ?>>
-  <?php $inner_options['class'] = (isset($inner_options['class'])) ? $inner_options['class'].' editable_content_list_item' : 'editable_content_list_item'; ?>
+  <?php $inner_attributes['class'] = (isset($inner_attributes['class'])) ? $inner_attributes['class'].' editable_content_list_item' : 'editable_content_list_item'; ?>
   <?php foreach ($collection as $obj): ?>
-    <?php $inner_options['id'] = 'item_'.$obj->id ?>
+    <?php $inner_attributes['id'] = 'item_'.$obj->id ?>
     <?php if(should_show_io_editor() && $with_delete): ?>
       <a class="editable_content_list_delete"
-      rel="<?php echo $inner_options['id'] ?>"
+      rel="<?php echo $inner_attributes['id'] ?>"
       href="<?php echo url_for('editable_content_service_list_delete', array('id' => $obj->id, 'class' => $class)) ?>">
           delete
       </a>
     <?php endif; ?>
-    <?php echo editable_content_tag($inner_tag, $obj, $fields, $inner_options) ?>
+    <?php echo editable_content_tag($inner_tag, $obj, $fields, $inner_attributes) ?>
   <?php endforeach; ?>
 
   <?php if (should_show_io_editor() && $with_new): ?>

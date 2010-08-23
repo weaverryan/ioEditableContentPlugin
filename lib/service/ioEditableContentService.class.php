@@ -33,6 +33,12 @@ class ioEditableContentService
     'mode',
   );
 
+  protected $_validListOptions = array(
+    'with_new',
+    'with_delete',
+    'sortable',
+  );
+
   /**
    * Class constructor
    *
@@ -133,36 +139,42 @@ class ioEditableContentService
    *
    * @return string
    */
-  public function getEditableContentList($outer_tag, $collection, $options, $inner_tag, $fields, $inner_options)
+  public function getEditableContentList($outer_tag, $collection, $attributes, $inner_tag, $fields, $inner_attributes)
   {
-    // the class of the objects in the collection
-    $class = $collection->getTable()->getClassNameToReturn();
-    
+    // extract the option values, remove from the attributes array
+    $options = array();
+    foreach ($this->_validListOptions as $validOption)
+    {
+      if (isset($attributes[$validOption]))
+      {
+        $options[$validOption] = _get_option($attributes, $validOption);
+      }
+    }
+
+    // @TODO Refactor the sortable
     // parse the options out of the options array
     $sortable = (_get_option($options, 'sortable', false)) ? 'sortable_'.substr(md5(microtime()),0,5) : 0;
-    $with_new = _get_option($options, 'with_new', false);
-    $with_delete = _get_option($options, 'with_delete', false);
-    
-    // extract attributes from options
-    $attributes = $options;
 
-    // start decking out the classes
+    // start decking out the classes on the outer tag
     $classes = isset($attributes['class']) ? explode(' ', $attributes['class']) : array();
 
     if ($this->shouldShowEditor())
     {
-      $metadataOptions = array(
-        'with_new' => (integer) $with_new,
-      );
-
-      $classes[] = json_encode($metadataOptions);
+      $classes[] = json_encode($options);
       $classes[] = $this->getOption('editable_list_class_name', 'io_editable_content_list');
     }
 
     $attributes['class'] = implode(' ', $classes);
     
-    // new object
+    // create a new object of the given model
+    $class = $collection->getTable()->getClassNameToReturn();
     $new = new $class();
+
+    /*
+     * Begin rendering the content - this is a refactor of the previous
+     * _list.php partial
+     */
+    
     
     return include_partial(
       'ioEditableContent/list',
@@ -171,12 +183,12 @@ class ioEditableContentService
         'collection'       => $collection,
         'attributes'       => $attributes,
         'sortable'         => $sortable,
-        'with_new'         => $with_new,
-        'with_delete'      => $with_delete,
+        'with_new'         => isset($options['with_new']) && $options['with_new'],
+        'with_delete'      => isset($options['with_delete']) && $options['with_delete'],
         'new'              => $new,
         'inner_tag'        => $inner_tag,
         'fields'           => $fields,
-        'inner_options'    => $inner_options,
+        'inner_attributes' => $inner_attributes,
         'class'            => $class,
       )
     );
