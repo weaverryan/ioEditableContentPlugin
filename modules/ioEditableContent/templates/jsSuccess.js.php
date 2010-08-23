@@ -11,4 +11,14 @@ $(document).ready(function(){
 
     $(this).ioEditableContent(options);
   });
+
+  // initialize each editable content list
+  $('.<?php echo $editableListClassName ?>').each(function() {
+
+    $(this).ioEditableContentList({
+      form_url: formServiceUrl,
+      show_url: showServiceUrl
+    });
+
+  });
 });

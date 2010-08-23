@@ -14,6 +14,9 @@ class BaseioEditableContentActions extends sfActions
     $this->pluginWebRoot = sfConfig::get('app_editable_content_assets_web_root', '/ioEditableContentPlugin');
     $this->editableClassName = $this->_getEditableContentService()
       ->getOption('editable_class_name', 'io_editable_content');
+
+    $this->editableListClassName = $this->_getEditableContentService()
+      ->getOption('editable_list_class_name', 'io_editable_content_list');
   }
 
   // the dynamic css file

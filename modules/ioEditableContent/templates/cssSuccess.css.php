@@ -27,3 +27,8 @@
   width: 95%;
   font:bold 0.95em arial, sans-serif;
 }
+
+/* The placeholder "new" element output with editable lists */
+.<?php echo $editableListClassName ?> .io_new_tag {
+  display: none;
+}

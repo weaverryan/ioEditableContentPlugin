@@ -9,6 +9,7 @@ all:
       edit_mode:           fancybox                  # The default editor mode: fancybox|inline
       admin_credential:    editable_content_admin    # inline editing only made available to users with this credential
       editable_class_name: io_editable_content
+      editable_list_class_name: io_editable_content_list
 
     assets_web_root:     /ioEditableContentPlugin
 

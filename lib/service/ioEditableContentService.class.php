@@ -145,6 +145,19 @@ class ioEditableContentService
     
     // extract attributes from options
     $attributes = $options;
+    $listClassName = $this->getOption('editable_list_class_name', 'io_editable_content_list');
+
+    if ($this->shouldShowEditor())
+    {
+      if (isset($attributes['class']))
+      {
+        $attributes['class'] = $attributes['class'] .' '.$listClassName;
+      }
+      else
+      {
+        $attributes['class'] = $listClassName;
+      }
+    }
     
     // new object
     $new = new $class();
