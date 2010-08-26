@@ -7,14 +7,18 @@ $(document).ready(function(){
   initializeEditableContent('body');
 });
 
+/**
+ * you can use this to reinitialize both the editable content area and editable content list items
+ */
 function initializeEditableContent(wrapper)
 {
-  wrapper = $(wrapper);
-  
   initializeEditableContentArea(wrapper);
   initializeEditableContentList(wrapper);
 }
 
+/**
+ * you can use this to reinitialize the editable content area
+ */
 function initializeEditableContentArea(wrapper)
 {
   wrapper = $(wrapper);
@@ -30,6 +34,9 @@ function initializeEditableContentArea(wrapper)
   });
 }
 
+/**
+ * you can use this to reinitialize the editable content list
+ */
 function initializeEditableContentList(wrapper)
 {
   wrapper = $(wrapper);
