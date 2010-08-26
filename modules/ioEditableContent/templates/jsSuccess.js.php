@@ -4,9 +4,23 @@ var deleteServiceUrl = '<?php echo url_for('@editable_content_service_delete') ?
 var sortableServiceurl = '<?php echo url_for('@editable_content_service_list_sort') ?>';
 
 $(document).ready(function(){
+  initializeEditableContent('body');
+});
 
+function initializeEditableContent(wrapper)
+{
+  wrapper = $(wrapper);
+  
+  initializeEditableContentArea(wrapper);
+  initializeEditableContentList(wrapper);
+}
+
+function initializeEditableContentArea(wrapper)
+{
+  wrapper = $(wrapper);
+  
   // initialize each editable content area
-  $('.<?php echo $editableClassName ?>').each(function() {
+  $('.<?php echo $editableClassName ?>', wrapper).each(function() {
     var options = $(this).metadata();
     options.form_url = formServiceUrl;
     options.show_url = showServiceUrl;
@@ -14,9 +28,14 @@ $(document).ready(function(){
 
     $(this).ioEditableContent(options);
   });
+}
 
+function initializeEditableContentList(wrapper)
+{
+  wrapper = $(wrapper);
+  
   // initialize each editable content list
-  $('.<?php echo $editableListClassName ?>').each(function() {
+  $('.<?php echo $editableListClassName ?>', wrapper).each(function() {
     var options = $(this).metadata();
     options.form_url = formServiceUrl;
     options.show_url = showServiceUrl;
@@ -27,4 +46,4 @@ $(document).ready(function(){
 
     $(this).ioEditableContentList(options);
   });
-});
+}
