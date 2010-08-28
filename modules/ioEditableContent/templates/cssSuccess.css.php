@@ -40,8 +40,6 @@
   height: 16px;
   position: absolute;
   display: none;
-  margin-left: -20px;
-
 }
 .<?php echo $editableClassName ?>:hover .editable_delete_link {
   display: inline;
