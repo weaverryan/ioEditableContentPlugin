@@ -38,9 +38,27 @@ class BaseioEditableContentActions extends sfActions
    */
   public function executeForm(sfWebRequest $request)
   {
-    $this->_checkCredentials();
-    if (!$this->_setupVariables($request))
+    /*
+     * this is usually an ajax request, so we wrap the exception so we can,
+     * in debug=true mode, report the actual error back to the user
+     */
+    try
     {
+      $this->_checkCredentials();
+      if (!$this->_setupVariables($request))
+      {
+        return sfView::NONE;
+      }
+    }
+    catch (Exception $e)
+    {
+      if (!sfConfig::get('sf_debug'))
+      {
+        throw $e;
+      }
+
+      $this->renderText($e);
+
       return sfView::NONE;
     }
   }
