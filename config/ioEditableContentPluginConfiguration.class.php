@@ -84,6 +84,11 @@ class ioEditableContentPluginConfiguration extends sfPluginConfiguration
    */
   protected function _loadEditorAssets(sfContext $context)
   {
+    $context->getEventDispatcher()->notify(new sfEvent(
+      $context->getResponse(),
+      'editable_content.load_editor_assets'
+    ));
+
     $response = $context->getResponse();
     $pluginWebRoot = sfConfig::get('app_editable_content_assets_web_root', '/ioEditableContentPlugin');
 
