@@ -11,7 +11,7 @@
 class ioEditableContentService
 {
   /**
-   * @var array The options array
+   * @var array The global options array
    *
    * Default options include:
    *  * editable_class_name: The class name to give editable content areas
@@ -258,16 +258,14 @@ class ioEditableContentService
        * is the actual string that the variable is set to.
        */
       $varName = sfInflector::underscore($this->_getObjectClass($obj));
+
       return get_partial($partial, array('var_name' => $varName, $varName => $obj));
     }
 
     // unless we have exactly one field, we need a partial to render
     if (count($fields) != 1)
     {
-      if (!$partial)
-      {
-        throw new sfException('You must pass a "partial" option for multi-field content areas.');
-      }
+      throw new sfException('You must pass a "partial" option for multi-field content areas.');
     }
 
     if ($content = $obj->get($fields[0]))
