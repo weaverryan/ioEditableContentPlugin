@@ -124,6 +124,12 @@ except for the following:
 
  * `partial` A partial to render with instead of rendering the raw field
     from the given database object.
+
+ * `method` When editing and displaying just one field, you can pass a
+    method argument that will be called to display that value. For example,
+    if the field being edited is `author_id` (a foreign key field), you
+    might pass a value of `getAuthorName()` for the `method` option and
+    then define that in your model.
  
  * `form` A form class to use when editing the content. By default, the
    main form class (e.g. `BlogForm`) will be used. If a third argument

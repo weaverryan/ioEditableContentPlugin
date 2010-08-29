@@ -12,4 +12,9 @@
  */
 class Blog extends BaseBlog
 {
+  // used by unit test to see if this method is called
+  public function getTestValue()
+  {
+    return 'unit_test_value';
+  }
 }

@@ -3,7 +3,7 @@
 require_once dirname(__FILE__).'/../../bootstrap/functional.php';
 require_once $_SERVER['SYMFONY'].'/vendor/lime/lime.php';
 
-$t = new lime_test(17);
+$t = new lime_test(18);
 
 $t->info('1 - Test some basic getters and setters');
   $service = new ioEditableContentService($context->getUser(), array('test_option' => 'test_val'));
@@ -44,12 +44,16 @@ $t->info('3 - Test getContent()');
     $t->pass('Exception thrown');
   }
 
-  $t->info('  3.1 - Test with rendering a partial');
+  $t->info('  3.3 - Test with rendering a partial');
   $result = $service->getContent($blog, array(), 'unit/blog');
   $expected = '<div class="var_name">blog</div>
 <div class="obj_class">Blog</div>
 <div class="content">Unit test blog</div>';
   $t->is($result, $expected, '->getContent() returns content renderd from the partial');
+
+  $t->info('  3.4 - Test with the "method" option');
+  $result = $service->getcontent($blog, array(), null, 'getTestValue');
+  $t->is($result, 'unit_test_value', 'The method option (and no partial option) calls the method on the object.');
 
 $t->info('4 - Test getEditableContentTag()');
 

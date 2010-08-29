@@ -266,6 +266,11 @@ $.widget('ui.ioEditableContent', {
       params.partial = this.option('partial');
     }
 
+    if(typeof(this.option('method')) !== 'undefined')
+    {
+      params.method = this.option('method');
+    }
+
     return jQuery.param(params)
   },
   

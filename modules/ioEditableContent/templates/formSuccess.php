@@ -11,6 +11,7 @@
     <input type="hidden" name="fields[]" value="<?php echo $field ?>" />
   <?php endforeach; ?>
   <input type="hidden" name="partial" value="<?php echo $partial ?>" />
+  <input type="hidden" name="method" value="<?php echo $method ?>" />
 
   <?php echo $form->renderHiddenFields() ?>
 

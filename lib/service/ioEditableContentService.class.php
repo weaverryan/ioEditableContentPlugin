@@ -32,6 +32,7 @@ class ioEditableContentService
     'form_partial',
     'mode',
     'with_delete',
+    'method',
   );
 
   protected $_validListOptions = array(
@@ -112,7 +113,8 @@ class ioEditableContentService
 
     // render the html for this content tag
     $partial = isset($options['partial']) ? $options['partial'] : null;
-    $content = $this->getContent($obj, $fields, $partial);
+    $method = isset($options['method']) ? $options['method'] : null;
+    $content = $this->getContent($obj, $fields, $partial, $method);
 
     // if we have some classes, set them to the attributes
     if (count($classes) > 0)
@@ -223,8 +225,6 @@ class ioEditableContentService
       // even if no credential were passed, still require a login at least
       return $this->_user->isAuthenticated();
     }
-
-    return true;
   }
 
   /**
@@ -233,19 +233,32 @@ class ioEditableContentService
    * @param  mixed $obj     The Doctrine/propel object that houses the content 
    * @param  array $fields  The name of the fields on the model to use for content
    * @param  string $partial Optional partial to use for rendering
+   * @param  string $method A method to call on the object to render a single field
+   *
+   * The "partial" option is the strongest (and required for more than one
+   * field) - if specified, that partial will be rendered. Otherwise,
+   * "method" will be called on the object and if not specified, the normal
+   * getter on the one field will be called. 
    *
    * @todo Make this work with propel
    * @return string
    */
-  public function getContent($obj, $fields, $partial = null)
+  public function getContent($obj, $fields, $partial = null, $method = null)
   {
     if ($obj instanceof sfOutputEscaper)
     {
       $obj = $obj->getRawValue();
     }
 
+    // unless we have exactly one field, we need a partial to render
+    if (count($fields) > 1 && !$partial)
+    {
+      throw new sfException('You must pass a "partial" option for multi-field content areas.');
+    }
+
     if ($partial)
     {
+      // render via the partial
       sfApplicationConfiguration::getActive()->loadHelpers('Partial');
 
       /*
@@ -259,16 +272,16 @@ class ioEditableContentService
        */
       $varName = sfInflector::underscore($this->_getObjectClass($obj));
 
-      return get_partial($partial, array('var_name' => $varName, $varName => $obj));
+      $content = get_partial($partial, array('var_name' => $varName, $varName => $obj));
     }
-
-    // unless we have exactly one field, we need a partial to render
-    if (count($fields) != 1)
+    else
     {
-      throw new sfException('You must pass a "partial" option for multi-field content areas.');
+      // use the method option of the standard getter
+      $content = ($method) ? $obj->$method() : $obj->get($fields[0]);
     }
 
-    if ($content = $obj->get($fields[0]))
+    // if we have content, return it
+    if ($content)
     {
       return $content;
     }

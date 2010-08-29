@@ -69,6 +69,7 @@ $browser->info('3 - Display and submit a simple form')
     ->checkElement('input[type=hidden][name=form][value="BlogForm"]', 1)
     ->checkElement('input[type=hidden][name=form_partial][value=ioEditableContent/formFields]', 1)
     ->checkElement('input[type=hidden][name=partial][value=]', 1)
+    ->checkElement('input[type=hidden][name="method"][value=]', 1)
     ->checkElement('input[type=hidden][name="fields[]"][value=title]', 1)
   ->end()
 
@@ -129,7 +130,7 @@ $browser->info('  3.5 - Goto the show page for this content area')
 
 $form = new BlogBodyForm($blog);
 $browser->info('4 - Display and submit a complex form')
-  ->get('/service/content/form?model=Blog&pk=2&form=BlogBodyForm&form_partial=test%2FbodyForm&partial=test%2Fbody')
+  ->get('/service/content/form?model=Blog&pk=2&form=BlogBodyForm&form_partial=test%2FbodyForm&partial=test%2Fbody&method=getTestValue')
 
   ->with('request')->begin()
     ->isParameter('module', 'ioEditableContent')
@@ -143,6 +144,7 @@ $browser->info('4 - Display and submit a complex form')
     ->checkElement('input[type=hidden][name=pk][value='.$blog->id.']', 1)
     ->checkElement('input[type=hidden][name=form][value="BlogBodyForm"]', 1)
     ->checkElement('input[type=hidden][name=form_partial][value=test/bodyForm]', 1)
+    ->checkElement('input[type=hidden][name="method"][value=getTestValue]', 1)
     ->checkElement('input[type=hidden][name=partial][value=test/body]', 1)
   ->end()
 
@@ -176,6 +178,19 @@ $browser->info('  4.3 - Goto the show page for this content area')
   ->with('response')->begin()
     ->isStatusCode(200)
     ->matches('/new body/')
+  ->end()
+
+  ->info('  4.4 - Goto the show page for content driven by the "method" option')
+  ->get('/service/content/show?model=Blog&pk=2&form=BlogBodyForm&form_partial=test%2FbodyForm&method=getTestValue')
+
+  ->with('request')->begin()
+    ->isParameter('module', 'ioEditableContent')
+    ->isParameter('action', 'show')
+  ->end()
+
+  ->with('response')->begin()
+    ->isStatusCode(200)
+    ->matches('/unit_test_value/')
   ->end()
 ;
 

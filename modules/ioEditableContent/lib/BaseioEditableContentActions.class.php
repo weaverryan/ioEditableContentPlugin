@@ -141,7 +141,8 @@ class BaseioEditableContentActions extends sfActions
     $this->renderText($service->getContent(
       $this->object,
       $this->fields,
-      $this->partial
+      $this->partial,
+      $this->method
     ));
 
     return sfView::NONE;
@@ -240,6 +241,7 @@ class BaseioEditableContentActions extends sfActions
     $this->fields = (array)$request->getParameter('fields', array());
 
     $this->partial = $request->getParameter('partial');
+    $this->method = $request->getParameter('method');
 
     // @todo make this work with propel
     $this->forward404Unless($this->model && $this->pk);
@@ -252,6 +254,7 @@ class BaseioEditableContentActions extends sfActions
     if (!class_exists($this->formClass))
     {
       $this->renderText(sprintf('<div>Cannot find form class "%s"</div>', $this->formClass));
+
       return false;
     }
 
