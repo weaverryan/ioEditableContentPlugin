@@ -233,6 +233,22 @@ The second three options are simply the first, third and fourth option
 from `editable_content_tag`. These specify how each individual entry
 of the collection should be rendered.
 
+### Editable list options
+
+As mentioned above, the editable list can give you "new", "delete" and
+"sortable" capabilities to a list of objects. Each of these are off by
+default and are activated using the third option to `editable_content_list`.
+The following would use all three:
+
+    <?php echo editable_content_list(
+      'div',
+      $authors,
+      array('with_new' => true, 'with_delete' => true, 'sortable' => true),
+      'h2',
+      'name',
+      array('class' => 'header'),
+    ) ?>
+
 Configuration
 -------------
 
