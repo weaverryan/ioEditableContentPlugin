@@ -249,6 +249,10 @@ The following would use all three:
       array('class' => 'header'),
     ) ?>
 
+>**NOTE**
+>The sortable option requires the jQuery sortable UI library. This library
+>is not currently provided by this plugin and must be supplied manually.
+
 Configuration
 -------------
 
