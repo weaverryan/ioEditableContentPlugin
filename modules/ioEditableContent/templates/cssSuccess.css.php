@@ -30,7 +30,7 @@
 
 /* The placeholder "new" element output with editable lists */
 .<?php echo $editableListClassName ?> .io_new_tag {
-  display: none;
+  display: none !important;
 }
 
 /* The delete link - hidden unless hovering over the element */
