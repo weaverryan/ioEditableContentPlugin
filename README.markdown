@@ -249,6 +249,10 @@ The following would use all three:
       array('class' => 'header'),
     ) ?>
 
+When using the `with_new` option, you may also pass a `add_new_label` option
+which specifies the text that will be displayed to the user for adding
+a new item to the list (defaults to simply "Add new"). 
+
 >**NOTE**
 >The sortable option requires the jQuery sortable UI library. This library
 >is not currently provided by this plugin and must be supplied manually.

@@ -39,6 +39,7 @@ class ioEditableContentService
     'with_new',
     'with_delete',
     'sortable',
+    'add_new_label',
   );
 
   /**
