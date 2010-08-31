@@ -83,5 +83,7 @@ function should_show_io_editor()
  */
 function editable_content_list($outer_tag, $collection, $options, $inner_tag, $fields, $inner_options)
 {
+  $collection = ($collection instanceof sfOutputEscaper) ? $collection->getRawValue() : $collection;
+
   return get_editable_content_service()->getEditableContentList($outer_tag, $collection, $options, $inner_tag, $fields, $inner_options);
 }

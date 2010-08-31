@@ -142,7 +142,7 @@ class ioEditableContentService
    *
    * @return string
    */
-  public function getEditableContentList($outer_tag, $collection, $attributes, $inner_tag, $fields, $inner_attributes)
+  public function getEditableContentList($outer_tag, Doctrine_Collection $collection, $attributes, $inner_tag, $fields, $inner_attributes)
   {
     // extract the option values, remove from the attributes array
     $options = array();
