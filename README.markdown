@@ -293,10 +293,11 @@ be a CKEditor widget. A great plugin for doing this is
 
 While the above will work for normal forms, it will not persist correctly
 for any ajax forms (which this plugin uses). By including the following
-javascript, the CKEditor will persist correctly:
+javascript, the CKEditor will persist correctly (this js can be found in the
+ioFormPlugin and is used by the CKEditor widget included therein):
 
     jQuery(document).ready(function(){
-      $('.io_editable_content').bind('preFormSubmit', function(event){
+      $('form').bind('ioPreFormSubmit', function(event){
         jQuery.each(CKEDITOR.instances, function(index, value) {
           value.updateElement();
         });

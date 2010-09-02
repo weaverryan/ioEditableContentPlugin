@@ -53,7 +53,7 @@ $.widget('ui.ioContentEditor', {
       self.block();
       
       // trigger the event, allow anybody to prep anything
-      $(this).trigger('preFormSubmit');
+      $(this).trigger('ioPreFormSubmit');
 
       $(this).ajaxSubmit({
         dataType: 'json',
