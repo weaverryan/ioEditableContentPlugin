@@ -258,7 +258,8 @@ class BaseioEditableContentActions extends sfActions
       return false;
     }
 
-    $this->form = new $this->formClass($this->object);
+    $formClass = $this->formClass;
+    $this->form = new $formClass($this->object);
     if ($this->fields)
     {
       $this->form->useFields($this->fields);
