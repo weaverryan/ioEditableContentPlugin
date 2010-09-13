@@ -75,6 +75,12 @@ class BaseioEditableContentActions extends sfActions
     }
 
     $formName = $this->form->getName();
+    
+    $values = $request->getParameter($formName);
+    $default_values = $request->getParameter('default_values');
+    
+    $values = array_merge($default_values, $values);
+    
     $this->form->bind($request->getParameter($formName), $request->getFiles($formName));
 
     // response is a json with an error key
@@ -239,6 +245,7 @@ class BaseioEditableContentActions extends sfActions
     $this->formClass = $request->getParameter('form', $this->model.'Form');
     $this->formPartial = $request->getParameter('form_partial', 'ioEditableContent/formFields');
     $this->fields = (array)$request->getParameter('fields', array());
+    $this->default_values = (array)$request->getParameter('default_values', array());
 
     $this->partial = $request->getParameter('partial');
     $this->method = $request->getParameter('method');

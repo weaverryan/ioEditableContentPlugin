@@ -33,6 +33,7 @@ class ioEditableContentService
     'mode',
     'with_delete',
     'method',
+    'default_values'
   );
 
   protected $_validListOptions = array(

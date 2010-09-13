@@ -10,6 +10,9 @@
   <?php foreach ($fields as $field): ?>
     <input type="hidden" name="fields[]" value="<?php echo $field ?>" />
   <?php endforeach; ?>
+  <?php foreach ($default_values as $key => $value): ?>
+    <input type="hidden" name="default_values[<?php echo $key ?>]" value="<?php echo $value ?>" />
+  <?php endforeach; ?>
   <input type="hidden" name="partial" value="<?php echo $partial ?>" />
   <input type="hidden" name="method" value="<?php echo $method ?>" />
 

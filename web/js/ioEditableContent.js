@@ -250,6 +250,7 @@ $.widget('ui.ioEditableContent', {
     params.model = this.option('model');
     params.pk = this.option('pk');
     params.fields = this.option('fields');
+    params.default_values = this.option('default_values');
 
     if(typeof(this.option('form')) !== 'undefined')
     {
