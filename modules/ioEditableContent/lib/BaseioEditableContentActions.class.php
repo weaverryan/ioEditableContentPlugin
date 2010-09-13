@@ -95,6 +95,15 @@ class BaseioEditableContentActions extends sfActions
         $pkField = $pkField[0];
         $json['pk'] = $this->form->getObject()->get($pkField);
       }
+      
+      /**
+       * for new objects, allow the form to refresh the same way it would for 
+       * a redirect in the case that there are fields / configuration 
+       * dependent on the object's values that have changed since the form
+       * was created earlier
+       */
+       $formClass = get_class($this->form);
+       $this->form = new $formClass($this->form->getObject());
     }
     else
     {
@@ -108,7 +117,7 @@ class BaseioEditableContentActions extends sfActions
 
     // the form body consists of both global errors and the form field partial
     $json['response'] = $this->form->renderGlobalErrors();
-    $json['response'] .= $this->getPartial($formPartial);
+    $json['response'] .= $this->getPartial('formInner');
     $text = json_encode($json);
 
     /*
