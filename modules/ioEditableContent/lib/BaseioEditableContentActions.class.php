@@ -76,11 +76,6 @@ class BaseioEditableContentActions extends sfActions
 
     $formName = $this->form->getName();
     
-    $values = $request->getParameter($formName);
-    $default_values = $request->getParameter('default_values');
-    
-    $values = array_merge($default_values, $values);
-    
     $this->form->bind($request->getParameter($formName), $request->getFiles($formName));
 
     // response is a json with an error key
@@ -256,6 +251,7 @@ class BaseioEditableContentActions extends sfActions
     if (!$this->object)
     {
       $this->object = new $this->model();
+      $this->object->fromArray($this->default_values);
     }
 
     if (!class_exists($this->formClass))
