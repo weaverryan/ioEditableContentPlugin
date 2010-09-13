@@ -252,14 +252,14 @@ class ioEditableContentService
     }
 
     // unless we have exactly one field, we need a partial to render
-    if (count($fields) > 1 && !$partial)
+    if (count($fields) > 1 && !$partial && !$method)
     {
       throw new sfException('You must pass a "partial" option for multi-field content areas.');
     }
 
     if ($partial)
     {
-      // render via the partial
+      // render via the partial if available
       sfApplicationConfiguration::getActive()->loadHelpers('Partial');
 
       /*
@@ -275,10 +275,15 @@ class ioEditableContentService
 
       $content = get_partial($partial, array('var_name' => $varName, $varName => $obj));
     }
+    else if ($method)
+    {
+      // use the method option on the object itself if available
+      $content = $obj->$method();
+    }
     else
     {
-      // use the method option of the standard getter
-      $content = ($method) ? $obj->$method() : $obj->get($fields[0]);
+      // take a guess at the content since there's only one field
+       $content = $obj->get($fields[0]);
     }
 
     // if we have content, return it
