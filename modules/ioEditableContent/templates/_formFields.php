@@ -17,7 +17,22 @@
 <?php else: ?>
   <table>
     <?php foreach ($renderableFields as $field): ?>
-      <?php echo $form[$field]->renderRow() ?>
+      <tr>
+        <td>
+          
+          <?php echo $form[$field]->renderLabel() ?>
+          
+          <?php if ($form[$field]->hasError()): ?>
+            <br/>
+            <?php echo $form[$field]->renderError() ?>
+          <?php endif; ?>
+          
+          <br/>
+          
+          <?php echo $form[$field]->render() ?>
+          
+        </td>
+      </tr>
     <?php endforeach; ?>
   </table>
 <?php endif; ?>
