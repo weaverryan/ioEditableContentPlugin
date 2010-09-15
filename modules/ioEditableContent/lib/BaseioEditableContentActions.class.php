@@ -94,6 +94,11 @@ class BaseioEditableContentActions extends sfActions
         $pkField = $this->form->getObject()->getTable()->getIdentifierColumnNames();
         $pkField = $pkField[0];
         $json['pk'] = $this->form->getObject()->get($pkField);
+        
+        // also need to set the pk variable for the formInner partial so the
+        // hidden field "pk" in the partial is not null (which would simulate
+        // another "new" form submission -- this form should "update" from now on)
+        $this->pk = $this->form->getObject()->get($pkField);
       }
       
       /**
