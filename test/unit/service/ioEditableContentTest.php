@@ -47,7 +47,7 @@ $t->info('3 - Test getContent()');
   $t->info('  3.2.1 - Test multiple fields, no partial, yes "method" - does not throw exception');
   try
   {
-    $service->getContent($blog, array('title', 'body'), null, 'bogus');
+    $service->getContent($blog, array('title', 'body'), null, 'getTestValue');
     $t->pass('Exception not thrown');
   }
   catch (sfException $e)
