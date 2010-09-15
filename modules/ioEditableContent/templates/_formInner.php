@@ -16,7 +16,6 @@
 
 <?php echo $form->renderHiddenFields() ?>
 
-<div class="form_body">
-  <?php echo $form->renderGlobalErrors() ?>
-  <?php include_partial($formPartial, array('form' => $form)); ?>
-</div>
+
+<?php echo $form->renderGlobalErrors() ?>
+<?php include_partial($formPartial, array('form' => $form)); ?>
