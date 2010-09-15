@@ -316,3 +316,18 @@ A bug tracker is available at
 
 This plugin was taken from both [sympal CMF](http://www.sympalphp.org)
 and [sfDoctrineEditableComponentPlugin](http://github.com/n1k0/sfDoctrineEditableComponentPlugin).
+
+
+Testing
+-------
+
+As with any standalone symfony plugin, this is the basic testing method:
+
+1\. Rebuild -- You'll need to rebuild the model of the test project:
+
+      cd test/fixtures/project/
+      ./symfony doctrine:build --all --and-load
+
+2\.  Setup Environment -- You'll need to set up the symfony library path in your command line envrionment.  Something like this:
+
+    export SYMFONY='/Users/username/sites/symfony/lib'
