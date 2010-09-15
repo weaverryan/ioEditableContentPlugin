@@ -82,6 +82,7 @@ $t->info('4 - Test getEditableContentTag()');
   $options = array(
     'mode' => 'test_mode',
     'partial' => 'unit/blog',
+    'default_values' => array('title'=>'bogus')
   );
   $attributes = array(
     'class' => 'my_class',
