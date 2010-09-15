@@ -3,7 +3,7 @@
 require_once dirname(__FILE__).'/../../bootstrap/functional.php';
 require_once $_SERVER['SYMFONY'].'/vendor/lime/lime.php';
 
-$t = new lime_test(18);
+$t = new lime_test();
 
 $t->info('1 - Test some basic getters and setters');
   $service = new ioEditableContentService($context->getUser(), array('test_option' => 'test_val'));
@@ -14,7 +14,7 @@ $t->info('1 - Test some basic getters and setters');
 
 $t->info('2 - Test shouldShowEditor()');
   $service = new ioEditableContentService($context->getUser());
-  $t->is($service->shouldShowEditor(), false, '->shouldShowEditor() returns false: no credential passed in, but we stil require auth.');
+  $t->is($service->shouldShowEditor(), false, '->shouldShowEditor() returns false: no credential passed in, but we still require auth.');
   $context->getUser()->setAuthenticated(true);
   $t->is($service->shouldShowEditor(), true, '->shouldShowEditor() returns true if no credential is passed to require.');
   $service->setOption('admin_credential', 'test_edit_credential');
@@ -36,7 +36,7 @@ $t->info('3 - Test getContent()');
   $t->info('  3.2 - Test multiple fields, no partial - throws an exception');
   try
   {
-    $service->getContent($blog, array('title', 'body'));
+    $service->getContent($blog, array('title', 'body'), null, null);
     $t->fail('Exception not thrown');
   }
   catch (sfException $e)
@@ -44,12 +44,23 @@ $t->info('3 - Test getContent()');
     $t->pass('Exception thrown');
   }
 
+  $t->info('  3.2.1 - Test multiple fields, no partial, yes "method" - does not throw exception');
+  try
+  {
+    $service->getContent($blog, array('title', 'body'), null, 'bogus');
+    $t->pass('Exception not thrown');
+  }
+  catch (sfException $e)
+  {
+    $t->fail('Exception thrown');
+  }
+
   $t->info('  3.3 - Test with rendering a partial');
   $result = $service->getContent($blog, array(), 'unit/blog');
   $expected = '<div class="var_name">blog</div>
 <div class="obj_class">Blog</div>
 <div class="content">Unit test blog</div>';
-  $t->is($result, $expected, '->getContent() returns content renderd from the partial');
+  $t->is($result, $expected, '->getContent() returns content rendered from the partial');
 
   $t->info('  3.4 - Test with the "method" option');
   $result = $service->getcontent($blog, array(), null, 'getTestValue');
