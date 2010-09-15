@@ -119,15 +119,16 @@ function test_tag_creation(lime_test $t, ioEditableContentService $service, $tag
     $attributes['class'] = $service->getOption('editable_class_name', 'io_editable_content');
   }
 
-  if(!isset($options['mode']))
+  if (!isset($options['mode']))
   {
     $options['mode'] = $service->getOption('edit_mode', 'fancybox');
   }
+  
   $options['model'] = 'Blog';
   $options['pk'] = $blog->id;
   $options['fields'] = (array) $fields;
   $attributes['class'] .= ' '.json_encode($options);
-
+  
   // get the result, leave only the opening tag, which is all we care about
   $expected = content_tag($tag, 'anything', $attributes);
   $expected = str_replace('anything</'.$tag.'>', '', $expected);
