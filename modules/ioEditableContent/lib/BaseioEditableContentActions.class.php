@@ -44,11 +44,11 @@ class BaseioEditableContentActions extends sfActions
      */
     try
     {
-      $this->_checkCredentials();
       if (!$this->_setupVariables($request))
       {
         return sfView::NONE;
       }
+      $this->_checkCredentials($this->object);
     }
     catch (Exception $e)
     {
@@ -68,11 +68,11 @@ class BaseioEditableContentActions extends sfActions
    */
   public function executeUpdate(sfWebRequest $request)
   {
-    $this->_checkCredentials();
     if (!$this->_setupVariables($request))
     {
       return sfView::NONE;
     }
+    $this->_checkCredentials($this->object);
 
     $formName = $this->form->getName();
     
@@ -146,11 +146,11 @@ class BaseioEditableContentActions extends sfActions
    */
   public function executeShow(sfWebRequest $request)
   {
-    $this->_checkCredentials();
     if (!$this->_setupVariables($request))
     {
       return sfView::NONE;
     }
+    $this->_checkCredentials($this->object);
     $service = $this->_getEditableContentService();
 
     // render the content of the tag
@@ -169,7 +169,6 @@ class BaseioEditableContentActions extends sfActions
    */
   public function executeSort(sfWebRequest $request)
   {
-    $this->_checkCredentials();
     // give me the class of the objects being sorted
     $model = $request->getParameter('model');
     $items = $request->getParameter('items');
@@ -186,6 +185,7 @@ class BaseioEditableContentActions extends sfActions
       ->from($model.' c')
       ->whereIn('c.id', array_keys($items))
       ->execute();
+    $this->_checkCredentials($objects);
     
     // set the positions and save the objects
     foreach($objects as $obj)
@@ -202,13 +202,14 @@ class BaseioEditableContentActions extends sfActions
   
   public function executeDelete(sfWebRequest $request)
   {
-    $this->_checkCredentials();
     $model = $request->getParameter('model');
     $pk = $request->getParameter('pk');
 
     $this->forward404Unless($model && $pk, 'No model or pk parameter passed');
     $object = Doctrine_Core::getTable($model)->find($pk);
     $this->forward404Unless($object, sprintf('No %s with pk %s found', $model, $pk));
+
+    $this->_checkCredentials($object);
 
     $object->delete();
     
@@ -223,13 +224,13 @@ class BaseioEditableContentActions extends sfActions
    */
   public function executeSetColumn(sfWebRequest $request)
   {
-    $this->_checkCredentials();
     $column = $request->getParameter('column');
     $id = $request->getParameter('id');
     $model = $request->getParameter('model');
     $value = $request->getParameter('value');
     
     $obj = Doctrine_Core::getTable($model)->find($id);
+    $this->_checkCredentials($obj);
     
     if ($obj)
     {
@@ -290,10 +291,12 @@ class BaseioEditableContentActions extends sfActions
   
   /**
    * Helper to forward 404 if the user doesn't have edit credentials
+   *
+   * @param Object $obj The specific object being modified
    */
-  protected function _checkCredentials()
+  protected function _checkCredentials($obj = null)
   {
-    $this->forward404Unless($this->_getEditableContentService()->shouldShowEditor($this->getUser()));
+    $this->forward404Unless($this->_getEditableContentService()->shouldShowEditor($obj));
   }
 
   /**
