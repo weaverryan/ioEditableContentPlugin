@@ -134,6 +134,10 @@ class BaseioEditableContentActions extends sfActions
     if ($this->form->isMultipart())
     {
       $text = '<textarea>'.$text.'</textarea>';
+
+      // when submitted via iframe, this won't be ajax. So symfony will
+      // try to include the web debug toolbar.
+      sfConfig::set('sf_web_debug', false);
     }
 
     $this->renderText($text);
