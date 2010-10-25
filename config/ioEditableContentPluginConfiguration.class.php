@@ -72,7 +72,7 @@ class ioEditableContentPluginConfiguration extends sfPluginConfiguration
     $class = sfConfig::get('app_editable_content_content_service_class', 'ioEditableContentService');
     $options = sfConfig::get('app_editable_content_content_service_options', array());
 
-    return new $class($user, $options);
+    return new $class($user, $this->dispatcher, $options);
   }
 
 

@@ -11,6 +11,16 @@
 class ioEditableContentService
 {
   /**
+   * @var sfBasicSecurityUser
+   */
+  protected $_user;
+
+  /**
+   * @var sfEventDispatcher
+   */
+  protected $_dispatcher;
+
+  /**
    * @var array The global options array
    *
    * Default options include:
@@ -20,6 +30,11 @@ class ioEditableContentService
    *  * admin_credential:    The credential needed to trigger the editor
    */
   protected $_options = array();
+
+  /**
+   * @var array
+   */
+  protected $_shouldShowEditor = array();
 
   /**
    * The valid options that can be passes in through the attributes array
@@ -49,9 +64,10 @@ class ioEditableContentService
    * @param  string $editableClassName  The class name to give editable content areas
    * @param  string $defaultMode        The default editor mode
    */
-  public function __construct(sfBasicSecurityUser $user, $options = array())
+  public function __construct(sfBasicSecurityUser $user, sfEventDispatcher $dispatcher, $options = array())
   {
     $this->_user = $user;
+    $this->_dispatcher = $dispatcher;
     $this->_options = $options;
   }
 
@@ -100,7 +116,7 @@ class ioEditableContentService
     $classes = isset($attributes['class']) ? explode(' ', $attributes['class']) : array();
 
     // add in the classes needed to activate the editable content
-    if ($this->shouldShowEditor())
+    if ($this->shouldShowEditor($obj))
     {
       // setup the editable class
       $classes[] = $this->getOption('editable_class_name', 'io_editable_content');
@@ -162,7 +178,7 @@ class ioEditableContentService
     // start decking out the classes on the outer tag
     $classes = isset($attributes['class']) ? explode(' ', $attributes['class']) : array();
 
-    if ($this->shouldShowEditor())
+    if ($this->shouldShowEditor($collection))
     {
       $classes[] = json_encode($options);
       $classes[] = $this->getOption('editable_list_class_name', 'io_editable_content_list');
@@ -189,7 +205,7 @@ class ioEditableContentService
     }
 
     // add the empty/new item so the js has something to build from
-    if ($this->shouldShowEditor())
+    if ($this->shouldShowEditor($collection))
     {
       $empty_attributes = $inner_attributes;
       if (isset($empty_attributes['class']))
@@ -211,23 +227,42 @@ class ioEditableContentService
   }
   
   /**
-   * Returns whether or not inline editing should be rendered for this request.
+   * Returns whether or not inline editing should be enabled.
    *
+   * This method can be called "in general" (no $obj passed) or answered
+   * for a very specific object being modified.
+   *
+   * @param Object $object The Object being edited - could be a Doctrine_Record, Doctrine_Collection 
    * @return boolean
    */
-  public function shouldShowEditor()
+  public function shouldShowEditor($obj = null)
   {
-    $credential = $this->getOption('admin_credential');
-    if ($credential)
+    $key = ($obj === null) ? 'generic' : spl_object_hash($obj);
+
+    if (!isset($this->_shouldShowEditor[$key]))
     {
-      return $this->_user->hasCredential($credential);
+      $credential = $this->getOption('admin_credential');
+      if ($credential)
+      {
+        $shouldShow = $this->_user->hasCredential($credential);
+      }
+      else
+      {
+        // even if no credential were passed, still require a login at least
+        $shouldShow = $this->_user->isAuthenticated();
+      }
+
+      $event = new sfEvent($this, 'editable_content.should_show_editor', array(
+        'user'    => $this->_user,
+        'object'  => $obj,
+      ));
+      $this->_dispatcher->filter($event, $shouldShow);
+
+      $this->_shouldShowEditor[$key] = $event->getReturnValue();
     }
-    else
-    {
-      // even if no credential were passed, still require a login at least
-      return $this->_user->isAuthenticated();
-    }
-  }
+
+    return $this->_shouldShowEditor[$key];
+  } 
 
   /**
    * Returns the content given an orm object and field name
