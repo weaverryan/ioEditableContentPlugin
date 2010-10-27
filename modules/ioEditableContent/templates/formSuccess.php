@@ -17,8 +17,8 @@
   ?>
   </div>
 
-  <input type="button" class="cancel" value="cancel" />
-  <input type="submit" value="save" />
-  <input type="button" class="done" value="done" />
+  <input type="button" class="cancel io_editable_button" value="cancel" />
+  <input type="submit" value="save" class="io_editable_button" />
+  <input type="button" class="done io_editable_button" value="done" />
 
 </form>
