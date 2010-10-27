@@ -64,9 +64,11 @@ function get_editable_content_service()
  *
  * @return boolean
  */
-function should_show_io_editor()
+function should_show_io_editor($obj = null)
 {
-  return get_editable_content_service()->shouldShowEditor();
+  $obj = ($obj instanceof sfOutputEscaper) ? $obj->getRawValue() : $obj;
+
+  return get_editable_content_service()->shouldShowEditor($obj);
 }
 
 /**
