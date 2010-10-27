@@ -107,9 +107,12 @@ class BaseioEditableContentActions extends sfActions
        * dependent on the object's values that have changed since the form
        * was created earlier
        */
-       $formClass = get_class($this->form);
-       $this->form = new $formClass($this->form->getObject());
-       $this->form->useFields($this->fields);
+      $formClass = get_class($this->form);
+      $this->form = new $formClass($this->form->getObject());
+      if ($this->fields)
+      {
+        $this->form->useFields($this->fields);
+      }
     }
     else
     {
@@ -258,6 +261,7 @@ class BaseioEditableContentActions extends sfActions
     $this->pk = $request->getParameter('pk');
 
     $this->formClass = $request->getParameter('form', $this->model.'Form');
+    
     $this->formPartial = $request->getParameter('form_partial', 'ioEditableContent/formFields');
     $this->fields = (array)$request->getParameter('fields', array());
     $this->default_values = (array)$request->getParameter('default_values', array());
