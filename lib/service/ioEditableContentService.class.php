@@ -112,6 +112,11 @@ class ioEditableContentService
       }
     }
 
+    if (!isset($options['default_values']))
+    {
+      $options['default_values'] = array();
+    }
+
     // set the attributes variable, save the classes as an array for easier processing
     $classes = isset($attributes['class']) ? explode(' ', $attributes['class']) : array();
 
@@ -235,11 +240,11 @@ class ioEditableContentService
    * @param Object $object The Object being edited - could be a Doctrine_Record, Doctrine_Collection 
    * @return boolean
    */
-  public function shouldShowEditor($obj = null)
+  public function shouldShowEditor($obj = null, $forceRefresh = false)
   {
     $key = ($obj === null) ? 'generic' : spl_object_hash($obj);
 
-    if (!isset($this->_shouldShowEditor[$key]))
+    if (!isset($this->_shouldShowEditor[$key]) || $forceRefresh)
     {
       $credential = $this->getOption('admin_credential');
       if ($credential)

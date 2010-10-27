@@ -3,27 +3,29 @@
 require_once dirname(__FILE__).'/../../bootstrap/functional.php';
 require_once $_SERVER['SYMFONY'].'/vendor/lime/lime.php';
 
+$dispatcher = $configuration->getEventDispatcher();
+
 $t = new lime_test();
 
 $t->info('1 - Test some basic getters and setters');
-  $service = new ioEditableContentService($context->getUser(), array('test_option' => 'test_val'));
+  $service = new ioEditableContentService($context->getUser(), $dispatcher, array('test_option' => 'test_val'));
   $t->is($service->getOption('test_option', 'default'), 'test_val', '->getOption() works for options passed in the constructor');
   $service->setOption('new_option', 'foo');
   $t->is($service->getOption('new_option'), 'foo', '->setOption() sets the option value correctly');
   $t->is($service->getOption('fake_option', 'bar'), 'bar', '->getOption() on a nonexistent option returns the default value.');
 
 $t->info('2 - Test shouldShowEditor()');
-  $service = new ioEditableContentService($context->getUser());
-  $t->is($service->shouldShowEditor(), false, '->shouldShowEditor() returns false: no credential passed in, but we still require auth.');
+  $service = new ioEditableContentService($context->getUser(), $dispatcher);
+  $t->is($service->shouldShowEditor(null, true), false, '->shouldShowEditor() returns false: no credential passed in, but we still require auth.');
   $context->getUser()->setAuthenticated(true);
-  $t->is($service->shouldShowEditor(), true, '->shouldShowEditor() returns true if no credential is passed to require.');
+  $t->is($service->shouldShowEditor(null, true), true, '->shouldShowEditor() returns true if no credential is passed to require.');
   $service->setOption('admin_credential', 'test_edit_credential');
-  $t->is($service->shouldShowEditor(), false, '->shouldShowEditor() returns false: the user does not have the credential');
+  $t->is($service->shouldShowEditor(null, true), false, '->shouldShowEditor() returns false: the user does not have the credential');
   $context->getUser()->addCredential('test_edit_credential');
-  $t->is($service->shouldShowEditor(), true, '->shouldShowEditor() returns true: the user has the proper credential');
+  $t->is($service->shouldShowEditor(null, true), true, '->shouldShowEditor() returns true: the user has the proper credential');
 
 $t->info('3 - Test getContent()');
-  $service = new ioEditableContentService($context->getUser());
+  $service = new ioEditableContentService($context->getUser(), $dispatcher);
   $blog = new Blog();
   $blog->title = 'Unit test blog';
   $blog->body = 'Lorem Ipsum';
@@ -70,12 +72,13 @@ $t->info('4 - Test getEditableContentTag()');
 
   $t->info('  4.1 - Test without proper edit credentials');
   $context->getUser()->setAuthenticated(false);
-  $service = new ioEditableContentService($context->getUser());
+  $service = new ioEditableContentService($context->getUser(), $dispatcher);
   $result = $service->getEditableContentTag('div', $blog, 'title');
   $t->is($result, '<div>Unit test blog</div>', 'Without proper credentials, getEditableContentTag() returns just the tag and content');
 
   $t->info('  4.2 - single-field, no options, div');
   $context->getUser()->setAuthenticated(true);
+  $service = new ioEditableContentService($context->getUser(), $dispatcher);
   test_tag_creation($t, $service, 'div', 'title');
 
   $t->info('  4.3 - single-field, with options and attributes');
@@ -91,6 +94,7 @@ $t->info('4 - Test getEditableContentTag()');
   test_tag_creation($t, $service, 'div', 'title', $options, $attributes);
 
   $t->info('  4.4 - Pass in a null field.');
+  $service = new ioEditableContentService($context->getUser(), $dispatcher);
   $result = $service->getEditableContentTag('div', $blog, null, array('partial' => 'unit/blog', 'id' => 'unit_test'));
   check_json_array($t, $result, 'fields', array());
   check_json_array($t, $result, 'mode', 'fancybox');
@@ -123,6 +127,11 @@ function test_tag_creation(lime_test $t, ioEditableContentService $service, $tag
   if (!isset($options['mode']))
   {
     $options['mode'] = $service->getOption('edit_mode', 'fancybox');
+  }
+
+  if (!isset($options['default_values']))
+  {
+    $options['default_values'] = array();
   }
   
   $options['model'] = 'Blog';
