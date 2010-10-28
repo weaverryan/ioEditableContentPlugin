@@ -106,7 +106,7 @@ class ioEditableContentService
     $options['mode'] = _get_option($attributes, 'edit_mode', $this->getOption('edit_mode', 'fancybox'));
     foreach ($this->_validOptions as $validOption)
     {
-      if (isset($attributes[$validOption]))
+      if (array_key_exists($validOption, $attributes))
       {
         $options[$validOption] = _get_option($attributes, $validOption);
       }
