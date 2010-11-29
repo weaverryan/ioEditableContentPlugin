@@ -20,3 +20,5 @@ all:
     load_jquery_form:     true
     load_jquery_ui:       true
     load_jquery_blockui:  true   # optional, for loading messages
+    
+    single_field_label:   false  # show the label when there is only one field being edited

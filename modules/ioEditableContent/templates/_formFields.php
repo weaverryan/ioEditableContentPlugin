@@ -12,6 +12,11 @@
 ?>
 
 <?php if (count($renderableFields) == 1): ?>
+  <?php if(sfConfig::get('app_editable_content_single_field_label')): ?>
+    <?php echo $form[$renderableFields[0]]->renderLabel() ?>
+    <br />
+  <?php endif; ?>
+  
   <?php echo $form[$renderableFields[0]]->renderError() ?>
   <?php echo $form[$renderableFields[0]]->render() ?>
 <?php else: ?>
