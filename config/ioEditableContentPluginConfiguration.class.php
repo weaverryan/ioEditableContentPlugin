@@ -95,7 +95,7 @@ class ioEditableContentPluginConfiguration extends sfPluginConfiguration
     // JQuery
     if (true === sfConfig::get('app_editable_content_load_jquery'))
     {
-      $response->addJavascript(sprintf('%s/js/jquery-1.4.2.min.js', $pluginWebRoot), 'last');
+      $response->addJavascript(sprintf('%s/js/jquery-1.4.3.min.js', $pluginWebRoot), 'last');
     }
 
     // JQuery ui (just core and widget)
