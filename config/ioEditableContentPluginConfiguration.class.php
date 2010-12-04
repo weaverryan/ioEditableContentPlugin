@@ -125,8 +125,8 @@ class ioEditableContentPluginConfiguration extends sfPluginConfiguration
     // Fancybox
     if (true === sfConfig::get('app_editable_content_load_fancybox'))
     {
-      $response->addJavascript(sprintf('%s/fancybox/jquery.fancybox-1.3.1.js', $pluginWebRoot), 'last');
-      $response->addStylesheet(sprintf('%s/fancybox/jquery.fancybox-1.3.1.css', $pluginWebRoot), 'last');
+      $response->addJavascript(sprintf('%s/fancybox/jquery.fancybox-1.3.4.js', $pluginWebRoot), 'last');
+      $response->addStylesheet(sprintf('%s/fancybox/jquery.fancybox-1.3.4.css', $pluginWebRoot), 'last');
     }
 
     // The admin javascript file is handled by symfony
