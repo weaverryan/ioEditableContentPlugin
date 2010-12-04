@@ -57,7 +57,7 @@ $.widget('ui.ioEditableContent', {
         'hideOnContentClick': false,
         'type': 'ajax',
         'onComplete': function() {
-          self._initializeEditor($('#fancybox-inner'));
+          self._initializeEditor($('#fancybox-content'));
 
             // WARNING: this line may cause problems with WYSIWYG editors (as far as it screwing up the size)
             // makes the window fit around the internal. This is needed
