@@ -14,9 +14,9 @@ developer.
 When a user is authenticated and has the correct permission, the editable
 content blocks can be double-clicked to initiate editing.
 
-![view](http://github.com/weaverryan/ioEditableContentPlugin/raw/master/docs/view.png "normal view mode")
+![view](https://github.com/weaverryan/ioEditableContentPlugin/raw/master/docs/view.png "normal view mode")
 
-![editors](http://github.com/weaverryan/ioEditableContentPlugin/raw/master/docs/editors.png "editors open")
+![editors](https://github.com/weaverryan/ioEditableContentPlugin/raw/master/docs/editors.png "editors open")
 
 This plugin is inspired by both:
 
