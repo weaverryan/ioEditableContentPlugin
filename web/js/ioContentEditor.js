@@ -62,7 +62,9 @@ $.widget('ui.ioContentEditor', {
           // display some sort of error
         },
         success: function(responseText, statusText, xhr) {
-          if (responseText.error != '') {
+          var isError = responseText.error != '';
+
+          if (isError) {
             // display some sort of error
             //alert(result.error);
           }
@@ -72,7 +74,7 @@ $.widget('ui.ioContentEditor', {
           form.trigger('formPostResponse', responseText);
           self.unblock();
 
-          if (self.option('close_on_form_success'))
+          if (self.option('close_on_form_success') && !isError)
           {
             self._setOption('close_on_form_success', false);
             self.element.trigger('close');
