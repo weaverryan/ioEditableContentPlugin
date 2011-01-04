@@ -19,6 +19,6 @@
 
   <input type="button" class="cancel io_editable_button" value="cancel" />
   <input type="submit" value="save" class="io_editable_button" />
-  <input type="button" class="done io_editable_button" value="done" />
+  <input type="button" class="done io_editable_button" value="save and finish" />
 
 </form>
