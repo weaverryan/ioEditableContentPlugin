@@ -53,3 +53,9 @@
   font-size: .8em;
   padding-left: 20px;
 }
+
+.editable_content_form_error {
+  margin-bottom: 10px;
+  color: #900;
+  padding: 5px 0;
+}

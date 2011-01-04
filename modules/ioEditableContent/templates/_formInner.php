@@ -1,3 +1,9 @@
+<?php if ($form->hasErrors() && $message = sfConfig::get('app_editable_content_form_error_message')): ?>
+  <div class="editable_content_form_error">
+    <?php echo $message ?>
+  </div>
+<?php endif; ?>
+
 <?php include_stylesheets_for_form($form) ?>
 <?php include_javascripts_for_form($form) ?>
 

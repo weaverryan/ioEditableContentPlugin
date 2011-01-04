@@ -13,6 +13,9 @@ all:
 
     assets_web_root:     /ioEditableContentPlugin
 
+    # The message to display if a form has an error (or false)
+    form_error_message:   There was an error saving the form.
+
     # whether or not to automatically include the following asset libraries
     load_fancybox:        true
     load_jquery:          true
