@@ -59,7 +59,8 @@ $.widget('ui.ioContentEditor', {
         dataType: 'json',
         error: function(xhr, textStatus, errorThrown) {
           self.unblock();
-          // display some sort of error
+          // display some sort of error - this is better than nothing
+          alert('There was a server error when your form was submitted. Your changes may not have been saved.');
         },
         success: function(responseText, statusText, xhr) {
           var isError = responseText.error != '';
