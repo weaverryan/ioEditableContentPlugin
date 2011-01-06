@@ -304,7 +304,39 @@ ioFormPlugin and is used by the CKEditor widget included therein):
       });
     });
 
-The fine details
+Testing
+-------
+
+As with any standalone symfony plugin, this is the basic testing method:
+
+1. Rebuild -- You'll need to rebuild the model of the test project:
+
+      cd test/fixtures/project/
+      ./symfony doctrine:build --all --and-load
+
+2.  Setup Environment -- You'll need to set up the symfony library path in your command line envrionment.  Something like this:
+
+    export SYMFONY='/Users/username/sites/symfony/lib'
+
+Known Issues
+------------
+
+There is currently an issue where you cannot both all of the following on the *same* form:
+
+ * A file upload;
+AND
+ * A textarea field that *may* have quotes in it.
+
+The issue is related to how jQuery form handles JSON responses when submitting via an iframe
+(which is necessary when handling a file upload). For some reason, when the JSON response is
+placed into a the requisite ``textarea`` so that JSON can be used with the iframe, something
+goes wrong where the quotes inside the actual textarea of *your* form are not escaped. The end
+result is that the JSON is invalid.
+
+I'd love help with this - it's very specific bug, but easily repeatable if you satisfy the
+above-two conditions.
+
+The Fine Details
 ----------------
 
 Please clone and improve this plugin! Any feedback is welcomed - including
@@ -317,17 +349,3 @@ A bug tracker is available at
 This plugin was taken from both [sympal CMF](http://www.sympalphp.org)
 and [sfDoctrineEditableComponentPlugin](http://github.com/n1k0/sfDoctrineEditableComponentPlugin).
 
-
-Testing
--------
-
-As with any standalone symfony plugin, this is the basic testing method:
-
-1\. Rebuild -- You'll need to rebuild the model of the test project:
-
-      cd test/fixtures/project/
-      ./symfony doctrine:build --all --and-load
-
-2\.  Setup Environment -- You'll need to set up the symfony library path in your command line envrionment.  Something like this:
-
-    export SYMFONY='/Users/username/sites/symfony/lib'
