@@ -204,7 +204,7 @@ $.widget('ui.ioEditableContent', {
 
    // Deactivate any links, clicking cancel will bring up the editor
     $('a:not(.editable_content_link)', self.element).click(function() {
-      if (confirm('Follow link? (ok to follow, cancel to edit this area)')) {
+      if (confirm('Follow link? (Click "OK" to follow, or "Cancel" to edit this area.)')) {
         window.location($(this).attr('href'));
       }
       else
